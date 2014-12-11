@@ -26,30 +26,4 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-require './hutte'
-
-namespace :hutte do
-  task :deploy do
-    Hutte::SshSession.new('user', 'host').run do |ssh|
-      # ssh.run 'hostname'
-      # ssh.run 'pwd'
-
-      # ssh.lcd '/tmp' do
-      #   ssh.local 'git init'
-      #   ssh.local 'rm -rf .git'
-      # end
-
-      # ssh.cd '/home' do
-      #   ssh.run 'pwd'
-      # end
-
-      ssh.rsync(
-        remote_dir: 'qsdqsddsqfdsf',
-        local_dir: 'qsdqsdqsd',
-        # delete: true,
-        exclude: %w(test a b c)
-        # exclude: 'del'
-      )
-    end
-  end
-end
+require 'bundler/gem_tasks'

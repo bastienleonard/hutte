@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'net-ssh-session'
-gem 'highline'
-gem 'open4'
+# Specify your gem's dependencies in spam.gemspec
+gemspec
