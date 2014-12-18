@@ -167,8 +167,10 @@ module Hutte
         puts "   Executing local command '#{command}'"
       end
 
-      shell = LocalShell.new()
-      stdout, stderr = shell.run(command, :cd => @local_paths_manager.paths)
+      stdout, stderr = LocalShell.run(
+                command,
+                :cd => @local_paths_manager.paths
+              )
 
       # puts "pid        : #{ pid }"
       # puts "stdout     : #{ stdout.read.strip }"
@@ -184,9 +186,6 @@ module Hutte
       unless stderr.empty?
         puts "[STDERR] #{stderr}\n"
       end
-
-      # TODO: make this exception-safe
-      shell.cleanup
 
       [stdout, stderr]
     end
@@ -217,6 +216,15 @@ module Hutte
   class LocalShell
     def initialize
       @pid, @stdin, @stdout, @stderr = Open4::popen4('sh')
+    end
+
+    def self.run(command, *args)
+      begin
+        shell = self.new
+        shell.run(command, *args)
+      ensure
+        shell.cleanup unless shell.nil?
+      end
     end
 
     def run(command, *args)
