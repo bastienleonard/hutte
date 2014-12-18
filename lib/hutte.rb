@@ -90,8 +90,8 @@ module Hutte
 
       result = @session.run(command)
 
-      if output
-        puts "---> #{result.output.rstrip}\n\n"
+      if output && !result.output.rstrip.empty?
+        puts "[STDOUT] #{result.output.rstrip}\n\n"
       end
 
       result.output
@@ -168,7 +168,7 @@ module Hutte
       end
 
       shell = LocalShell.new()
-      process_output = shell.run(command, :cd => @local_paths_manager.paths)
+      stdout, stderr = shell.run(command, :cd => @local_paths_manager.paths)
 
       # puts "pid        : #{ pid }"
       # puts "stdout     : #{ stdout.read.strip }"
@@ -176,14 +176,19 @@ module Hutte
       # puts "status     : #{ status.inspect }"
       # puts "exitstatus : #{ status.exitstatus }"
 
-      if output
-        puts "---> #{process_output}\n"
+      if output && !stdout.empty?
+        puts "[STDOUT] #{stdout}\n"
+      end
+
+      # TODO: print on stderr?
+      unless stderr.empty?
+        puts "[STDERR] #{stderr}\n"
       end
 
       # TODO: make this exception-safe
       shell.cleanup
 
-      process_output
+      [stdout, stderr]
     end
   end
 
@@ -230,8 +235,7 @@ module Hutte
 
       @stdin.puts(command)
       @stdin.close
-      print_stderr
-      @stdout.read
+      [@stdout.read, @stderr.read]
     end
 
     def cleanup
@@ -241,13 +245,6 @@ module Hutte
       @stderr.close
       @stderr = nil
       pid_, status = Process::waitpid2(@pid)
-    end
-
-    private
-
-    # TODO: print in red
-    def print_stderr
-      puts "STDERR: #{@stderr.read}"
     end
   end
 end
