@@ -1,4 +1,3 @@
-#! /usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
 # Copyright 2014 Bastien Léonard. All rights reserved.
