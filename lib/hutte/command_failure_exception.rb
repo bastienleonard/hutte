@@ -27,41 +27,17 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 module Hutte
-  # TODO: refactor, make it more friendly for one-shot shells since that's how
-  # we use it now
-  class LocalShell
-    def initialize
-      @pid, @stdin, @stdout, @stderr = Open4::popen4('sh')
-    end
-
-    def self.run(command, *args)
-      self.new.run(command, *args)
-    end
-
-    def run(command, *args)
+  class CommandFailureException < Exception
+    def initialize(*args)
       options = args.empty? ? {} : args[0]
-      dirs = options[:cd]
-
-      unless dirs.nil?
-        unless dirs.is_a?(Enumerable)
-          dirs = [dirs]
-        end
-
-        dirs.each do |dir|
-          # TODO: we currently can't detect if cd failed
-          @stdin.puts("cd #{dir}")
-        end
-      end
-
-      @stdin.puts(command)
-      @stdin.close
-      ret = [@stdout.read, @stderr.read]
-      @stdin = nil
-      @stdout = nil
-      @stderr.close
-      @stderr = nil
-      pid_, status = Process::waitpid2(@pid)
-      ret + [status.exitstatus]
+      message = if options.has_key?(:code) 
+                  code = options[:code]
+                  "Command failed with exit code #{code}, aborting"
+                else
+                  "Command failed, aborting"
+                end
+      
+      super(message)
     end
   end
 end

@@ -29,6 +29,7 @@
 require 'hutte/local_paths_manager'
 require 'hutte/local_shell'
 require 'hutte/ssh_wrapper'
+require 'hutte/command_failure_exception'
 
 module Hutte
   # FIXME: check command failure
@@ -56,8 +57,13 @@ module Hutte
 
       result = @session.run(command)
 
+      # TODO: find how to get stderr
       if output && !result.output.rstrip.empty?
         puts "[STDOUT] #{result.output.rstrip}\n\n"
+      end
+
+      if result.error?
+        raise CommandFailureException.new
       end
 
       result.output
@@ -135,16 +141,10 @@ module Hutte
         puts "   Executing local command '#{command}'"
       end
 
-      stdout, stderr = LocalShell.run(
+      stdout, stderr, exit_code = LocalShell.run(
                 command,
                 :cd => @local_paths_manager.paths
               )
-
-      # puts "pid        : #{ pid }"
-      # puts "stdout     : #{ stdout.read.strip }"
-      # puts "stderr     : #{ stderr.read.strip }"
-      # puts "status     : #{ status.inspect }"
-      # puts "exitstatus : #{ status.exitstatus }"
 
       if output && !stdout.empty?
         puts "[STDOUT] #{stdout}\n"
@@ -153,6 +153,12 @@ module Hutte
       # TODO: print on stderr?
       unless stderr.empty?
         puts "[STDERR] #{stderr}\n"
+      end
+
+      if exit_code != 0
+        raise CommandFailureException.new(
+                :code => exit_code
+              )
       end
 
       [stdout, stderr]
