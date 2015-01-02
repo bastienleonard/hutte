@@ -26,8 +26,49 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-require 'highline/import'
-require 'net/ssh/session'
-require 'open4'
+module Hutte
+  # TODO: refactor, make it more friendly for one-shot shells since that's how
+  # we use it now
+  class LocalShell
+    def initialize
+      @pid, @stdin, @stdout, @stderr = Open4::popen4('sh')
+    end
 
-require 'hutte/ssh_session'
+    def self.run(command, *args)
+      begin
+        shell = self.new
+        shell.run(command, *args)
+      ensure
+        shell.cleanup unless shell.nil?
+      end
+    end
+
+    def run(command, *args)
+      options = args.empty? ? {} : args[0]
+      dirs = options[:cd]
+
+      unless dirs.nil?
+        unless dirs.is_a?(Enumerable)
+          dirs = [dirs]
+        end
+
+        dirs.each do |dir|
+          @stdin.puts("cd #{dir}")
+        end
+      end
+
+      @stdin.puts(command)
+      @stdin.close
+      [@stdout.read, @stderr.read]
+    end
+
+    def cleanup
+#      @stdin.close
+      @stdin = nil
+      @stdout = nil
+      @stderr.close
+      @stderr = nil
+      pid_, status = Process::waitpid2(@pid)
+    end
+  end
+end

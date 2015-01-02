@@ -26,8 +26,35 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-require 'highline/import'
-require 'net/ssh/session'
-require 'open4'
+require 'hutte/ssh_wrapper'
 
-require 'hutte/ssh_session'
+module Hutte
+  class SshSession
+    def initialize(user, host, *args)
+      @user = user
+      @host = host
+    end
+
+    def run
+      wrapper = SshWrapper.new(
+        @user,
+        @host,
+        prompt("Password for #{@user}@#{@host}"))
+      yield wrapper
+      nil
+    ensure
+      unless wrapper.nil?
+        wrapper.cleanup
+      end
+    end
+
+    private
+
+    def prompt(message, **options)
+      echo = options.delete(:echo)
+      ask("#{message}: ") do |q|
+        q.echo = echo
+      end
+    end
+  end
+end

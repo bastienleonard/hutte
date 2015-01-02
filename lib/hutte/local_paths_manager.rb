@@ -26,8 +26,24 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-require 'highline/import'
-require 'net/ssh/session'
-require 'open4'
+module Hutte
+  class LocalPathsManager
+    attr_reader :paths
 
-require 'hutte/ssh_session'
+    def initialize
+      @paths = []
+    end
+
+    def add(path)
+      @paths << path
+    end
+
+    def pop
+      @paths.pop
+    end
+
+    def current
+      @paths.last
+    end
+  end
+end
