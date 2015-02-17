@@ -50,7 +50,8 @@ module Hutte
 
     private
 
-    def prompt(message, **options)
+    def prompt(message, *args)
+      options = args.empty? ? {} : args[0]
       echo = options.delete(:echo)
       ask("#{message}: ") do |q|
         q.echo = echo
