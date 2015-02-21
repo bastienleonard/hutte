@@ -32,7 +32,6 @@ require 'hutte/ssh_wrapper'
 require 'hutte/command_failure_exception'
 
 module Hutte
-  # FIXME: check command failure
   class SshWrapper
     def initialize(user, host, password)
       @user = user
@@ -70,14 +69,18 @@ module Hutte
     end
 
     # TODO: check behavior when the block raises an error
-    # TODO: find an easier to normalise command component (don't use chomp
-    # everywhere)
+    # TODO: find an easier way to normalize command components (don't use chomp
+    # and regexes everywhere)
     def cd(path)
-      old_pwd = run('pwd', :output => false)
-      old_pwd = old_pwd.chomp
+      old_wd = run('pwd', :output => false)
+      old_wd = old_wd.chomp
+
+      # Remove stuff like the shell prompt
+      old_wd = old_wd.match(/^.*?((?:\/[[:alnum:]]*)+)$/)[1]
+
       run("cd #{path}", :output => false)
       yield
-      run("cd #{old_pwd.chomp}", :output => false)
+      run("cd #{old_wd}", :output => false)
       nil
     end
 
