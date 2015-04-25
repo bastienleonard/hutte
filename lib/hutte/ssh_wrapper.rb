@@ -76,7 +76,12 @@ module Hutte
       old_wd = old_wd.chomp
 
       # Remove stuff like the shell prompt
-      old_wd = old_wd.match(/^.*?((?:\/[[:alnum:]]*)+)$/)[1]
+      # TODO: unit test regex with data from local and remote servers
+      match = old_wd.match(/^.*?((?:\/[[:alnum:]]*)+)$/m)
+
+      unless match.nil?
+        old_wd = match[1]
+      end
 
       run("cd #{path}", :output => false)
       yield
