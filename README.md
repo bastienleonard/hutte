@@ -14,3 +14,29 @@ This is currently in alpha stage, I'm mostly experimenting and trying
 to see what's the best way to provide this kind of API in
 Ruby. However I maintain a stable branch in an attempt to prevent new
 features from introducing bugs in your projects.
+
+## Example
+
+```ruby
+Hutte::SshSession.new('user', 'host').run do |ssh|
+  # Execute some local commands, from /tmp
+  ssh.lcd '/tmp' do
+    ssh.local 'pwd'
+    ssh.local 'ls -l'
+  end
+
+  # Execute some remote commands, from /home
+  ssh.cd '/home' do
+    ssh.run 'pwd'
+    ssh.run 'ls -l'
+  end
+
+  # Use Rsync to synchronize a directory
+  ssh.rsync(
+    remote_dir: '/some/remote/dir',
+    local_dir: '/some/local/dir',
+    delete: false,
+    exclude: %w(test a b c)
+  )
+end
+```
