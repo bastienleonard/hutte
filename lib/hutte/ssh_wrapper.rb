@@ -26,23 +26,27 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-require 'hutte/local_paths_manager'
-require 'hutte/local_shell'
-require 'hutte/ssh_wrapper'
-require 'hutte/command_failure_exception'
+require 'net/ssh'
 
+require 'hutte/local_shell'
+require 'hutte/command_failure_exception'
+require 'hutte/ssh_exec'
+
+# TODO: print errors on stderr?
 module Hutte
   class SshWrapper
     def initialize(user, host, password)
       @user = user
       @host = host
-      @session = Net::SSH::Session.new(host, user, password)
-      @session.open
-      @local_paths_manager = LocalPathsManager.new
+      # TODO: refactor API to use the block versionof start(), to have
+      # automatic cleanup
+      @session = Net::SSH.start(host, user, password: password)
+      @remote_paths = []
+      @local_paths = []
     end
 
     def cleanup
-      @session.close
+      @session.close unless @session.closed?
     end
 
     def run(command, *args)
@@ -54,42 +58,42 @@ module Hutte
         puts "   Executing remote command '#{command}'"
       end
 
-      result = @session.run(command)
-
-      # TODO: find how to get stderr
-      if output && !result.output.rstrip.empty?
-        puts "[STDOUT] #{result.output.rstrip}\n\n"
+      # TODO: include the cds in the output?
+      @remote_paths.reverse_each do |path|
+        command = "cd #{path} && #{command}"
       end
 
-      if result.error?
-        raise CommandFailureException.new
+      Hutte::ssh_exec(@session, command) do |callback|
+        callback.on_stdout do |data|
+          puts "[STDOUT] #{data}\n\n"
+        end.on_stderr do |data|
+          puts "[STDERR] #{data}\n\n"
+        end.on_exit_status_received do |status|
+          if status != 0
+            # We include the cds in the command, which will help if one of the
+            # cds caused the error
+            raise CommandFailureException.new(
+                    :code => status,
+                    :command => command
+                  )
+          end
+        end
       end
-
-      result.output
     end
 
-    # TODO: check behavior when the block raises an error
-    # TODO: find an easier way to normalize command components (don't use chomp
-    # and regexes everywhere)
+    # TODO: print dir change
     def cd(path)
-      old_wd = run('pwd', :output => false)
-      old_wd = old_wd.chomp
+      @remote_paths << path
 
-      # Remove stuff like the shell prompt
-      # TODO: unit test regex with data from local and remote servers
-      match = old_wd.match(/^.*?((?:\/[[:alnum:]]*)+)$/m)
-
-      unless match.nil?
-        old_wd = match[1]
+      begin
+        yield
+      ensure
+        @remote_paths.pop
       end
 
-      run("cd #{path}", :output => false)
-      yield
-      run("cd #{old_wd}", :output => false)
       nil
     end
 
-    # TODO: don't ask password again
     def rsync(options)
       # TODO: probably should raise an error if remote_dir or local_dir are
       # absent
@@ -126,17 +130,20 @@ module Hutte
       local(command)
     end
 
-    # TODO: print dir change
     def local(command, *args)
       run_local_command(command, args)
     end
 
     # TODO: print dir change
-    # TODO: test what happens if block throws exception
+    # TODO: handle dir change failures
     def lcd(path)
-      @local_paths_manager.add(path)
-      yield
-      @local_paths_manager.pop
+      @local_paths << path
+
+      begin
+        yield
+      ensure
+        @local_paths.pop
+      end
     end
 
     private
@@ -151,21 +158,22 @@ module Hutte
 
       stdout, stderr, exit_code = LocalShell.run(
                 command,
-                :cd => @local_paths_manager.paths
+                :cd => @local_paths
               )
 
       if output && !stdout.empty?
         puts "[STDOUT] #{stdout}\n"
       end
 
-      # TODO: print on stderr?
       unless stderr.empty?
         puts "[STDERR] #{stderr}\n"
       end
 
       if exit_code != 0
+        # TODO: include cds in the command
         raise CommandFailureException.new(
-                :code => exit_code
+                :code => exit_code,
+                :command => command
               )
       end
 

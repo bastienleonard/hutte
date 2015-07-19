@@ -27,7 +27,6 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 require 'highline/import'
-require 'net/ssh/session'
 require 'open4'
 
 require 'hutte/ssh_session'

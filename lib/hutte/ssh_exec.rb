@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2014, 2015 Bastien Léonard. All rights reserved.
+# Copyright 2015 Bastien Léonard. All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -27,38 +27,62 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 module Hutte
-  class LocalShell
-    def initialize
-      @pid, @stdin, @stdout, @stderr = Open4::popen4('sh')
-    end
+  def self.ssh_exec(ssh, command)
+    setup = Setup.new
+    yield setup
+    on_stdout = setup.on_stdout
+    on_stderr = setup.on_stderr
+    on_exit_status_received = setup.on_exit_status_received
 
-    def self.run(command, *args)
-      self.new.run(command, *args)
-    end
-
-    def run(command, *args)
-      options = args.empty? ? {} : args[0]
-      dirs = options[:cd]
-
-      unless dirs.nil?
-        unless dirs.is_a?(Enumerable)
-          dirs = [dirs]
-        end
-
-        dirs.each do |dir|
-          @stdin.puts("cd #{dir}")
-        end
+    ssh.open_channel do |channel|
+      channel.on_request 'exit-status' do |ch, data|
+        status = data.read_long
+        on_exit_status_received.call(status)
       end
 
-      @stdin.puts(command)
-      @stdin.close
-      ret = [@stdout.read, @stderr.read]
-      @stdin = nil
-      @stdout = nil
-      @stderr.close
-      @stderr = nil
-      pid_, status = Process::waitpid2(@pid)
-      ret + [status.exitstatus]
+      channel.exec(command) do |channel, success|
+        raise 'Unimplemented error' unless success  # FIXME
+
+        channel.on_data do |channel, data|
+          on_stdout.call(data)
+        end
+
+        channel.on_extended_data do |channel, type, data|
+          on_stderr.call(data)
+        end
+
+        # TODO: review other available callbacks
+      end
+
+    end.wait
+  end
+
+  class Setup
+    ATTRS = [:on_stdout, :on_stderr, :on_exit_status_received]
+
+    def method_missing(name, *args, &block)
+      attr = "@#{name}"
+
+      if ATTRS.include?(name.to_sym)
+        if block.nil?
+          instance_variable_get(attr)
+        else
+          instance_variable_set(attr, block)
+          self
+        end
+      else
+        super
+      end
+    end
+
+    def inspect
+      attrs = ATTRS.map do |attr|
+        [attr, instance_variable_get("@#{attr}")]
+      end.map do |attr, value|
+        "#{attr}: #{value.inspect}"
+      end.join(', ')
+
+      "#{super} #{attrs}"
     end
   end
 end
