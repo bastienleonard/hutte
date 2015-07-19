@@ -18,6 +18,8 @@ features from introducing bugs in your projects.
 ## Example
 
 ```ruby
+require 'hutte'
+
 Hutte::SshSession.new('user', 'host').run do |ssh|
   # Execute some local commands, from /tmp
   ssh.lcd '/tmp' do
