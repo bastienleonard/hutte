@@ -51,11 +51,11 @@ module Hutte
 
     def run(command, *args)
       options = args.empty? ? {} : args[0]
-      output = options.delete(:output)
-      output = true if output.nil?
+      output = options.fetch(:output, true)
+      ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
 
       if output
-        puts "   Executing remote command '#{command}'"
+        puts "\n   Executing remote command '#{command}'"
       end
 
       # TODO: include the cds in the output?
@@ -63,13 +63,19 @@ module Hutte
         command = "cd #{path} && #{command}"
       end
 
+      exit_status = nil
+
       Hutte::ssh_exec(@session, command) do |callback|
         callback.on_stdout do |data|
-          puts "[STDOUT] #{data}\n\n"
+          if output
+            puts "[STDOUT] #{data}\n\n"
+          end
         end.on_stderr do |data|
           puts "[STDERR] #{data}\n\n"
         end.on_exit_status_received do |status|
-          if status != 0
+          exit_status = status
+
+          unless ok_exit_statuses.include?(status)
             # We include the cds in the command, which will help if one of the
             # cds caused the error
             raise CommandFailureException.new(
@@ -79,6 +85,8 @@ module Hutte
           end
         end
       end
+
+      exit_status
     end
 
     # TODO: print dir change
@@ -150,7 +158,7 @@ module Hutte
 
     def run_local_command(command, *args)
       options = args.empty? ? {} : args[0]
-      output = options.delete(:output) || true
+      output = options.fetch(:output, true)
 
       if output
         puts "   Executing local command '#{command}'"

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2014, 2015 Bastien Léonard. All rights reserved.
+# Copyright 2015 Bastien Léonard. All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -26,8 +26,24 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-require 'highline/import'
-require 'open4'
+require 'hutte/ssh_exec'
 
-require 'hutte/ssh_session'
-require 'hutte/file'
+module Hutte
+  class File
+    def self.exists?(ssh, path)
+      ssh.run(
+        "test -e #{path}",
+        :output => false,
+        :ok_exit_statuses => [0, 1]
+      ) == 0
+    end
+
+    def self.is_link?(ssh, path)
+      ssh.run(
+        "test -L #{path}",
+        :output => false,
+        :ok_exit_statuses => [0, 1]
+      ) == 0
+    end
+  end
+end
