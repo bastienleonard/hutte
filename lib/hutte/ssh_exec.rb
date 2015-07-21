@@ -30,40 +30,36 @@ module Hutte
   def self.ssh_exec(ssh, command)
     setup = Setup.new
     yield setup
-    on_stdout = setup.on_stdout
-    on_stderr = setup.on_stderr
-    on_exit_status_received = setup.on_exit_status_received
 
     ssh.open_channel do |channel|
       channel.on_request 'exit-status' do |ch, data|
         status = data.read_long
-        on_exit_status_received.call(status)
+        setup.on_exit_status_received.call(status)
       end
 
       channel.exec(command) do |channel, success|
         raise 'Unimplemented error' unless success  # FIXME
 
         channel.on_data do |channel, data|
-          on_stdout.call(data)
+          setup.on_stdout.call(data)
         end
 
         channel.on_extended_data do |channel, type, data|
-          on_stderr.call(data)
+          setup.on_stderr.call(data)
         end
 
         # TODO: review other available callbacks
       end
-
     end.wait
   end
 
   class Setup
-    ATTRS = [:on_stdout, :on_stderr, :on_exit_status_received]
+    CALLBACKS = [:on_stdout, :on_stderr, :on_exit_status_received]
 
     def method_missing(name, *args, &block)
       attr = "@#{name}"
 
-      if ATTRS.include?(name.to_sym)
+      if CALLBACKS.include?(name.to_sym)
         if block.nil?
           instance_variable_get(attr)
         else
@@ -76,7 +72,7 @@ module Hutte
     end
 
     def inspect
-      attrs = ATTRS.map do |attr|
+      attrs = CALLBACKS.map do |attr|
         [attr, instance_variable_get("@#{attr}")]
       end.map do |attr, value|
         "#{attr}: #{value.inspect}"
