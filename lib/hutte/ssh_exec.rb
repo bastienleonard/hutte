@@ -56,19 +56,17 @@ module Hutte
   class Setup
     CALLBACKS = [:on_stdout, :on_stderr, :on_exit_status_received]
 
-    def method_missing(name, *args, &block)
-      attr = "@#{name}"
-
-      if CALLBACKS.include?(name.to_sym)
-        if block.nil?
-          instance_variable_get(attr)
-        else
-          instance_variable_set(attr, block)
-          self
+    CALLBACKS.each do |name|
+      class_eval <<-END, __FILE__, __LINE__ + 1
+        def #{name}(&block)
+          if block.nil?
+            @#{name}
+          else
+            @#{name} = block
+            self
+          end
         end
-      else
-        super
-      end
+      END
     end
 
     def inspect
