@@ -37,12 +37,18 @@ module Hutte
       @host = host
     end
 
-    def run
+    def run(&block)
       wrapper = SshWrapper.new(
         @user,
         @host,
         prompt("Password for #{@user}@#{@host}"))
-      yield wrapper
+
+      if block.arity == 0
+        wrapper.instance_eval(&block)
+      else
+        block.call(wrapper)
+      end
+
       nil
     ensure
       unless wrapper.nil?
