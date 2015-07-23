@@ -159,6 +159,7 @@ module Hutte
     def run_local_command(command, *args)
       options = args.empty? ? {} : args[0]
       output = options.fetch(:output, true)
+      ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
 
       if output
         puts "   Executing local command '#{command}'"
@@ -177,7 +178,7 @@ module Hutte
         puts "[STDERR] #{stderr}\n"
       end
 
-      if exit_code != 0
+      unless ok_exit_statuses.include?(exit_code)
         # TODO: include cds in the command
         raise CommandFailureException.new(
                 :code => exit_code,
