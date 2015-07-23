@@ -45,11 +45,11 @@ end
 
 If you get tired of always typing `ssh.something`, you can drop the block
 parameter.
-In this case, the block is invoked with `self` referring to the same object as
+Then the block will be invoked with `self` referring to the same object as
 `ssh` in the previous example:
 
 ```ruby
-Hutte::SshSession.new('user', 'host').run do |ssh|
+Hutte::SshSession.new('user', 'host').run do
   cd '/tmp' do
     run 'pwd'
   end
