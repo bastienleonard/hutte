@@ -30,20 +30,44 @@ require 'hutte/ssh_exec'
 
 module Hutte
   class File
-    def self.exists?(ssh, path)
+    def self.test(ssh, test_flag, path)
       ssh.run(
-        "test -e #{path}",
-        :output => false,
+        "test #{test_flag} #{path}",
+        :output => true,
         :ok_exit_statuses => [0, 1]
       ) == 0
     end
 
+    def self.exists?(ssh, path)
+      self.test(ssh, '-e', path)
+    end
+
+    def self.is_dir?(ssh, path)
+      self.test(ssh, '-d', path)
+    end
+
+    def self.has_content?(ssh, path)
+      self.test(ssh, '-s', path)
+    end
+
     def self.is_link?(ssh, path)
-      ssh.run(
-        "test -L #{path}",
-        :output => false,
-        :ok_exit_statuses => [0, 1]
-      ) == 0
+      self.test(ssh, '-L', path)
+    end
+
+    def self.is_readable?(ssh, path)
+      self.test(ssh, '-r', path)
+    end
+
+    def self.is_writable?(ssh, path)
+      self.test(ssh, '-w', path)
+    end
+
+    def self.is_executable?(ssh, path)
+      self.test(ssh, '-x', path)
+    end
+
+    def self.is_socket?(ssh, path)
+      self.test(ssh, '-S', path)
     end
   end
 end
