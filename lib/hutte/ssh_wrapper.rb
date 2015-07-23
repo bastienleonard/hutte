@@ -139,7 +139,7 @@ module Hutte
     end
 
     def local(command, *args)
-      run_local_command(command, args)
+      run_local_command(command, *args)
     end
 
     # TODO: print dir change
