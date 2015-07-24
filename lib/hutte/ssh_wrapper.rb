@@ -118,6 +118,7 @@ module Hutte
       local_dir = options[:local_dir]
       exclude = options.fetch(:exclude, [])
       delete = options.fetch(:delete, false)
+      dry_run = options.fetch(:dry_run, false)
 
       command = 'rsync -pthrv' # --rsh='ssh -p 22'
 
@@ -125,10 +126,16 @@ module Hutte
         "--exclude #{path}"
       end.join(' ')
 
-      command << " #{exclude}"
+      unless exclude.empty?
+        command << " #{exclude}"
+      end
 
       if delete
         command << ' --delete'
+      end
+
+      if dry_run
+        command << ' --dry-run'
       end
 
       command << " #{local_dir}"
