@@ -103,31 +103,29 @@ module Hutte
     end
 
     def rsync(options)
-      # TODO: probably should raise an error if remote_dir or local_dir are
-      # absent
+      missing_options = [:local_dir, :remote_dir].reject do |name|
+        options.has_key?(name)
+      end
+
+      unless missing_options.empty?
+        raise ArgumentError.new(
+                'Call to rsync() lacks the following required parameters: ' +
+                missing_options.join(', ')
+              )
+      end
 
       remote_dir = options[:remote_dir]
       local_dir = options[:local_dir]
-      exclude = options[:exclude]
-      delete = options[:delete]
-
-      if delete.nil?
-        delete = false
-      end
+      exclude = options.fetch(:exclude, [])
+      delete = options.fetch(:delete, false)
 
       command = 'rsync -pthrv' # --rsh='ssh -p 22'
 
-      unless exclude.nil?
-        unless exclude.is_a?(Enumerable)
-          exclude = [exclude]
-        end
+      exclude = exclude.map do |path|
+        "--exclude #{path}"
+      end.join(' ')
 
-        exclude = exclude.map do |path|
-          "--exclude #{path}"
-        end.join(' ')
-
-        command << " #{exclude}"
-      end
+      command << " #{exclude}"
 
       if delete
         command << ' --delete'
