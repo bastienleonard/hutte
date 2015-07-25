@@ -28,8 +28,9 @@
 
 require 'net/ssh'
 
-require 'hutte/local_shell'
 require 'hutte/command_failure_exception'
+require 'hutte/local_shell'
+require 'hutte/rsync'
 require 'hutte/ssh_exec'
 
 # TODO: print errors on stderr?
@@ -103,44 +104,7 @@ module Hutte
     end
 
     def rsync(options)
-      missing_options = [:local_dir, :remote_dir].reject do |name|
-        options.has_key?(name)
-      end
-
-      unless missing_options.empty?
-        raise ArgumentError.new(
-                'Call to rsync() lacks the following required parameters: ' +
-                missing_options.join(', ')
-              )
-      end
-
-      remote_dir = options[:remote_dir]
-      local_dir = options[:local_dir]
-      exclude = options.fetch(:exclude, [])
-      delete = options.fetch(:delete, false)
-      dry_run = options.fetch(:dry_run, false)
-
-      command = 'rsync -pthrv' # --rsh='ssh -p 22'
-
-      exclude = exclude.map do |path|
-        "--exclude #{path}"
-      end.join(' ')
-
-      unless exclude.empty?
-        command << " #{exclude}"
-      end
-
-      if delete
-        command << ' --delete'
-      end
-
-      if dry_run
-        command << ' --dry-run'
-      end
-
-      command << " #{local_dir}"
-      command << " #{@user}@#{@host}:#{remote_dir}"
-      local(command)
+      Hutte::rsync(self, @user, @host, options)
     end
 
     def local(command, *args)
