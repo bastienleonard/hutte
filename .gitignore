@@ -2,3 +2,5 @@
 /pkg/
 /Gemfile.lock
 hutte-*.gem
+
+/doc/sphinx/_build
