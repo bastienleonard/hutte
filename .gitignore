@@ -4,3 +4,4 @@
 hutte-*.gem
 
 /doc/sphinx/_build
+*.pyc
