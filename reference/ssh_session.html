@@ -44,26 +44,21 @@
 <dl class="class">
 <dt id="Hutte::SshSession">
 <em class="property">class </em><code class="descclassname">Hutte::</code><code class="descname">SshSession</code><a class="headerlink" href="#Hutte::SshSession" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="Hutte::SshSession#initialize">
-<code class="descname">initialize</code><span class="sig-paren">(</span><em>user</em>, <em>host</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::SshSession#initialize" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="classmethod">
+<dt id="Hutte::SshSession.run">
+<em class="property">classmethod SshSession.</em><code class="descname">run</code><span class="sig-paren">(</span><em>user</em>, <em>host</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::SshSession.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Currently, a prompt always asks for a password, even if no
 password is required; in this case the user should press Enter
 without typing a password.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="Hutte::SshSession#run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::SshSession#run" title="Permalink to this definition">¶</a></dt>
-<dd><div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Document SshWrapper, cd, run and so on</p>
-</div>
 <p>Must be called with a block. It will be passed a DSL object with
 methods such as <em>run</em> and <em>cd</em>.</p>
 <p>If the block accepts no parameters, its <em>self</em> value will be
 bound to the DSL object instead, which allows for a less verbose
 style.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Document SshWrapper, cd, run and so on</p>
+</div>
 </dd></dl>
 
 </dd></dl>

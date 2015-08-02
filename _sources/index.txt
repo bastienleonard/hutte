@@ -25,7 +25,7 @@ Example::
 
    require 'hutte'
 
-   Hutte::SshSession.new('user', 'host').run do |ssh|
+   Hutte::SshSession.run('user', 'host') do |ssh|
      # Execute some local commands, from /tmp
      ssh.lcd '/tmp' do
        ssh.local 'pwd'
@@ -51,7 +51,7 @@ If you get tired of always typing ssh.something, you can drop the
 block parameter. Then the block will be invoked with self referring to
 the same object as ssh in the previous example::
 
-   Hutte::SshSession.new('user', 'host').run do
+   Hutte::SshSession('user', 'host') do
      cd '/tmp' do
        run 'pwd'
      end
