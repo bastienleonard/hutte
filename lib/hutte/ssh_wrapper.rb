@@ -36,18 +36,12 @@ require 'hutte/ssh_exec'
 # TODO: print errors on stderr?
 module Hutte
   class SshWrapper
-    def initialize(user, host, password)
+    def initialize(user, host, ssh)
       @user = user
       @host = host
-      # TODO: refactor API to use the block versionof start(), to have
-      # automatic cleanup
-      @session = Net::SSH.start(host, user, password: password)
+      @session = ssh
       @remote_paths = []
       @local_paths = []
-    end
-
-    def cleanup
-      @session.close unless @session.closed?
     end
 
     def run(command, *args)

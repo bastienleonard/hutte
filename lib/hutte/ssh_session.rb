@@ -38,22 +38,21 @@ module Hutte
     end
 
     def run(&block)
-      wrapper = SshWrapper.new(
-        @user,
+      Net::SSH.start(
         @host,
-        prompt("Password for #{@user}@#{@host}"))
+        @user,
+        :password => prompt("Password for #{@user}@#{@host}")
+      ) do |ssh|
+        wrapper = SshWrapper.new(@user, @host, ssh)
 
-      if block.arity == 0
-        wrapper.instance_eval(&block)
-      else
-        block.call(wrapper)
+        if block.arity == 0
+          wrapper.instance_eval(&block)
+        else
+          block.call(wrapper)
+        end
       end
 
       nil
-    ensure
-      unless wrapper.nil?
-        wrapper.cleanup
-      end
     end
 
     private
