@@ -32,7 +32,7 @@ require 'hutte/ssh_wrapper'
 
 module Hutte
   class SshSession
-    def initialize(user, host, *args)
+    def initialize(user, host)
       @user = user
       @host = host
     end
