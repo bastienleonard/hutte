@@ -20,7 +20,7 @@ features from introducing bugs in your projects.
 ```ruby
 require 'hutte'
 
-Hutte::SshSession.new('user', 'host').run do |ssh|
+Hutte::SshSession.run('user', 'host') do |ssh|
   # Execute some local commands, from /tmp
   ssh.lcd '/tmp' do
     ssh.local 'pwd'
@@ -49,7 +49,7 @@ Then the block will be invoked with `self` referring to the same object as
 `ssh` in the previous example:
 
 ```ruby
-Hutte::SshSession.new('user', 'host').run do
+Hutte::SshSession.run('user', 'host') do
   cd '/tmp' do
     run 'pwd'
   end

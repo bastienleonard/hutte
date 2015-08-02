@@ -32,6 +32,10 @@ require 'hutte/ssh_wrapper'
 
 module Hutte
   class SshSession
+    def self.run(user, host, &block)
+      self.new(user, host).run(&block)
+    end
+
     def initialize(user, host)
       @user = user
       @host = host
