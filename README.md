@@ -20,38 +20,25 @@ features from introducing bugs in your projects.
 ```ruby
 require 'hutte'
 
-Hutte::SshSession.run('user', 'host') do |ssh|
+Hutte::SshSession.run('user', 'host') do
   # Execute some local commands, from /tmp
-  ssh.lcd '/tmp' do
-    ssh.local 'pwd'
-    ssh.local 'ls -l'
+  lcd '/tmp' do
+    local 'pwd'
+    local 'ls -l'
   end
 
   # Execute some remote commands, from /home
-  ssh.cd '/home' do
-    ssh.run 'pwd'
-    ssh.run 'ls -l'
+  cd '/home' do
+    run 'pwd'
+    run 'ls -l'
   end
 
   # Use Rsync to synchronize a directory
-  ssh.rsync(
+  rsync(
     remote_dir: '/some/remote/dir',
     local_dir: '/some/local/dir',
     delete: false,
     exclude: %w(test a b c)
   )
-end
-```
-
-If you get tired of always typing `ssh.something`, you can drop the block
-parameter.
-Then the block will be invoked with `self` referring to the same object as
-`ssh` in the previous example:
-
-```ruby
-Hutte::SshSession.run('user', 'host') do
-  cd '/tmp' do
-    run 'pwd'
-  end
 end
 ```
