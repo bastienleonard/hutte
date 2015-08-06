@@ -29,6 +29,7 @@
 require 'net/ssh'
 
 require 'hutte/command_failure_exception'
+require 'hutte/file'
 require 'hutte/local_shell'
 require 'hutte/rsync'
 require 'hutte/ssh_exec'
@@ -36,6 +37,14 @@ require 'hutte/ssh_exec'
 # TODO: print errors on stderr?
 module Hutte
   class SshWrapper
+    # An easier to use the File methods:
+    # Hutte::File.exists?(s, path) becomes file_exists?(path)
+    Hutte::File.methods(false).each do |name|
+      define_method "file_#{name}" do |*args|
+        Hutte::File.send(name, self, *args)
+      end
+    end
+
     def initialize(user, host, ssh)
       @user = user
       @host = host
