@@ -29,9 +29,9 @@
 module Hutte
   class CommandFailureException < Exception
     def initialize(*args)
-      options = args.empty? ? {} : args[0]
+      options = args.first || {}
       command = options[:command]
-      message = if options.has_key?(:code) 
+      message = if options.has_key?(:code)
                   code = options[:code]
                   "Command #{command} failed with exit code #{code}, aborting"
                 else

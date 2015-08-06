@@ -39,7 +39,7 @@ module Hutte
     end
 
     def run(command, *args)
-      options = args.empty? ? {} : args[0]
+      options = args.first || {}
       dirs = options[:cd]
 
       unless dirs.nil?

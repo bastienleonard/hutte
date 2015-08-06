@@ -54,7 +54,7 @@ module Hutte
     end
 
     def run(command, *args)
-      options = args.empty? ? {} : args[0]
+      options = args.first || {}
       output = options.fetch(:output, true)
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
 
@@ -129,7 +129,7 @@ module Hutte
     private
 
     def run_local_command(command, *args)
-      options = args.empty? ? {} : args[0]
+      options = args.first || {}
       output = options.fetch(:output, true)
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
 
