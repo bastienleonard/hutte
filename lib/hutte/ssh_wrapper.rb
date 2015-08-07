@@ -45,12 +45,14 @@ module Hutte
       end
     end
 
-    def initialize(user, host, ssh)
+    def initialize(user, host, ssh, *args)
+      options = args.first || {}
       @user = user
       @host = host
       @session = ssh
       @remote_paths = []
       @local_paths = []
+      @dry_run = options.fetch(:dry_run, false)
     end
 
     def run(command, *args)
@@ -69,23 +71,27 @@ module Hutte
 
       exit_status = nil
 
-      Hutte::ssh_exec(@session, command) do |callback|
-        callback.on_stdout do |data|
-          if output
-            puts "[STDOUT] #{data}\n\n"
-          end
-        end.on_stderr do |data|
-          puts "[STDERR] #{data}\n\n"
-        end.on_exit_status_received do |status|
-          exit_status = status
+      if @dry_run
+        exit_status = 0
+      else
+        Hutte::ssh_exec(@session, command) do |callback|
+          callback.on_stdout do |data|
+            if output
+              puts "[STDOUT] #{data}\n\n"
+            end
+          end.on_stderr do |data|
+            puts "[STDERR] #{data}\n\n"
+          end.on_exit_status_received do |status|
+            exit_status = status
 
-          unless ok_exit_statuses.include?(status)
-            # We include the cds in the command, which will help if one of the
-            # cds caused the error
-            raise CommandFailureException.new(
-                    :code => status,
-                    :command => command
-                  )
+            unless ok_exit_statuses.include?(status)
+              # We include the cds in the command, which will help if one of the
+              # cds caused the error
+              raise CommandFailureException.new(
+                      :code => status,
+                      :command => command
+                    )
+            end
           end
         end
       end
@@ -107,7 +113,9 @@ module Hutte
     end
 
     def rsync(options)
-      Hutte::rsync(self, @user, @host, options)
+      Hutte::rsync(self, @user, @host, {
+                     dry_run: @dry_run
+                   }.merge(options))
     end
 
     def local(command, *args)
@@ -135,6 +143,10 @@ module Hutte
 
       if output
         puts "   Executing local command '#{command}'"
+      end
+
+      if @dry_run
+        return ['', '']
       end
 
       stdout, stderr, exit_code = LocalShell.run(

@@ -45,6 +45,7 @@ module Hutte
     delete = options.fetch(:delete, false)
     dry_run = options.fetch(:dry_run, false)
     extra_options = options[:extra_options]
+    dry_run = options.fetch(:dry_run, false)
 
     command = 'rsync -pthrv' # --rsh='ssh -p 22'
 
@@ -71,6 +72,6 @@ module Hutte
     command << " #{local_dir}"
     command << " #{user}@#{host}:#{remote_dir}"
 
-    ssh.local(command)
+    ssh.local(command, dry_run: dry_run)
   end
 end

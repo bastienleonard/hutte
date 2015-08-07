@@ -32,11 +32,13 @@ require 'hutte/ssh_wrapper'
 
 module Hutte
   class SshSession
-    def self.run(user, host, &block)
-      self.new(user, host).run(&block)
+    def self.run(*args, &block)
+      self.new(*args).run(&block)
     end
 
-    def initialize(user, host)
+    def initialize(user, host, *args)
+      options = args.first || {}
+      @dry_run = options.fetch(:dry_run, false)
       @user = user
       @host = host
     end
@@ -47,7 +49,7 @@ module Hutte
         @user,
         :password => prompt("Password for #{@user}@#{@host}")
       ) do |ssh|
-        wrapper = SshWrapper.new(@user, @host, ssh)
+        wrapper = SshWrapper.new(@user, @host, ssh, dry_run: @dry_run)
 
         if block.arity == 0
           wrapper.instance_eval(&block)
