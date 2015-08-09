@@ -28,26 +28,53 @@
 
 require 'open4'
 
+require 'hutte/options_dsl'
+
 module Hutte
   class LocalShell
-    def initialize
+    def initialize(command)
+      @command = command
       @pid, @stdin, @stdout, @stderr = Open4::popen4('sh')
+      @setup = Hutte::OptionsDsl.new(
+        callbacks: [:on_stdout, :on_stderr]
+      )
+      yield @setup
     end
 
-    def self.run(command)
-      self.new.run(command)
+    def self.run(command, &block)
+      self.new(command, &block).run
     end
 
-    def run(command)
-      @stdin.puts(command)
+    def run
+      @stdin.puts(@command)
       @stdin.close
-      ret = [@stdout.read, @stderr.read]
       @stdin = nil
+
+      begin
+        loop do
+          begin
+            s = @stdout.read_nonblock(1024)
+            @setup.on_stdout.call(s)
+          rescue IO::EAGAINWaitReadable
+          end
+
+          begin
+            s = @stderr.read_nonblock(1024)
+            @setup.on_stderr.call(s)
+          rescue IO::EAGAINWaitReadable
+          end
+
+          sleep(0.1)
+        end
+      rescue EOFError
+      end
+
+      @stdout.close
       @stdout = nil
       @stderr.close
       @stderr = nil
       pid_, status = Process::waitpid2(@pid)
-      ret + [status.exitstatus]
+      status
     end
   end
 end

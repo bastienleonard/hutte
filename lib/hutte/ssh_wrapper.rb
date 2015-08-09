@@ -170,28 +170,28 @@ module Hutte
       end
 
       if dry_run
-        return ['', '']
+        return 0
       end
 
-      stdout, stderr, exit_code = LocalShell.run(command)
-
-      if output && !stdout.empty?
-        puts "[STDOUT] #{stdout}\n"
+      exit_status = LocalShell.run(command) do |callback|
+        callback.on_stdout do |data|
+          if output
+            puts "[STDOUT] #{data}\n\n"
+          end
+        end.on_stderr do |data|
+          puts "[STDERR] #{data}\n\n"
+        end
       end
 
-      unless stderr.empty?
-        puts "[STDERR] #{stderr}\n"
-      end
-
-      unless ok_exit_statuses.include?(exit_code)
+      unless ok_exit_statuses.include?(exit_status)
         # TODO: include cds in the command
         raise CommandFailureException.new(
-                :code => exit_code,
+                :code => exit_status,
                 :command => command
               )
       end
 
-      [stdout, stderr]
+      exit_status
     end
   end
 end

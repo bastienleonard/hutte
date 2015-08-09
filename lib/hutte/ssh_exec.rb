@@ -26,9 +26,13 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+require 'hutte/options_dsl'
+
 module Hutte
   def self.ssh_exec(ssh, command)
-    setup = Setup.new
+    setup = Hutte::OptionsDsl.new(
+            callbacks: [:on_stdout, :on_stderr, :on_exit_status_received]
+    )
     yield setup
 
     ssh.open_channel do |channel|
@@ -51,32 +55,5 @@ module Hutte
         # TODO: review other available callbacks
       end
     end.wait
-  end
-
-  class Setup
-    CALLBACKS = [:on_stdout, :on_stderr, :on_exit_status_received]
-
-    CALLBACKS.each do |name|
-      class_eval <<-END, __FILE__, __LINE__ + 1
-        def #{name}(&block)
-          if block.nil?
-            @#{name}
-          else
-            @#{name} = block
-            self
-          end
-        end
-      END
-    end
-
-    def inspect
-      attrs = CALLBACKS.map do |attr|
-        [attr, instance_variable_get("@#{attr}")]
-      end.map do |attr, value|
-        "#{attr}: #{value.inspect}"
-      end.join(', ')
-
-      "#{super} #{attrs}"
-    end
   end
 end
