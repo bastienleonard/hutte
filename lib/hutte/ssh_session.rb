@@ -38,6 +38,7 @@ module Hutte
 
     def initialize(user, host, *args)
       options = args.first || {}
+      @verbose = options.fetch(:verbose, false)
       @dry_run = options.fetch(:dry_run, false)
       @user = user
       @host = host
@@ -49,7 +50,11 @@ module Hutte
         @user,
         :password => prompt("Password for #{@user}@#{@host}")
       ) do |ssh|
-        wrapper = SshWrapper.new(@user, @host, ssh, dry_run: @dry_run)
+        wrapper = SshWrapper.new(
+          @user, @host, ssh,
+          dry_run: @dry_run,
+          verbose: @verbose
+        )
 
         if block.arity == 0
           wrapper.instance_eval(&block)

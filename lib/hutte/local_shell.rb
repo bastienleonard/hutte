@@ -34,24 +34,11 @@ module Hutte
       @pid, @stdin, @stdout, @stderr = Open4::popen4('sh')
     end
 
-    def self.run(command, *args)
-      self.new.run(command, *args)
+    def self.run(command)
+      self.new.run(command)
     end
 
-    def run(command, *args)
-      options = args.first || {}
-      dirs = options[:cd]
-
-      unless dirs.nil?
-        unless dirs.is_a?(Enumerable)
-          dirs = [dirs]
-        end
-
-        dirs.each do |dir|
-          @stdin.puts("cd #{dir}")
-        end
-      end
-
+    def run(command)
       @stdin.puts(command)
       @stdin.close
       ret = [@stdout.read, @stderr.read]

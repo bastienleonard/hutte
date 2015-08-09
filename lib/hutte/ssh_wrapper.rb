@@ -52,22 +52,25 @@ module Hutte
       @session = ssh
       @remote_paths = []
       @local_paths = []
+      @verbose = options.fetch(:verbose, false)
       @dry_run = options.fetch(:dry_run, false)
     end
 
     def run(command, *args)
       options = args.first || {}
-      output = options.fetch(:output, true)
+      output = options.fetch(:output, true) || @verbose
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
       dry_run = options.fetch(:dry_run, @dry_run)
+      full_command = command.dup
 
-      if output
-        puts "\n   Executing remote command '#{command}'"
+      @remote_paths.reverse_each do |path|
+        full_command = "cd #{path} && #{full_command}"
       end
 
-      # TODO: include the cds in the output?
-      @remote_paths.reverse_each do |path|
-        command = "cd #{path} && #{command}"
+      printed_command = @verbose ? full_command : command
+
+      if output
+        puts "\n   Executing remote command '#{printed_command}'"
       end
 
       exit_status = nil
@@ -75,7 +78,7 @@ module Hutte
       if dry_run
         exit_status = 0
       else
-        Hutte::ssh_exec(@session, command) do |callback|
+        Hutte::ssh_exec(@session, full_command) do |callback|
           callback.on_stdout do |data|
             if output
               puts "[STDOUT] #{data}\n\n"
@@ -84,6 +87,10 @@ module Hutte
             puts "[STDERR] #{data}\n\n"
           end.on_exit_status_received do |status|
             exit_status = status
+
+            if @verbose
+              puts "Command exited with status #{exit_status}: #{full_command}"
+            end
 
             unless ok_exit_statuses.include?(status)
               # We include the cds in the command, which will help if one of the
@@ -100,9 +107,12 @@ module Hutte
       exit_status
     end
 
-    # TODO: print dir change
     def cd(path)
       @remote_paths << path
+
+      if @verbose
+        puts "Set the remote working directory to #{path}"
+      end
 
       begin
         yield
@@ -115,6 +125,7 @@ module Hutte
 
     def rsync(options)
       Hutte::rsync(self, @user, @host, {
+                     verbose: @verbose,
                      dry_run: @dry_run
                    }.merge(options))
     end
@@ -128,6 +139,10 @@ module Hutte
     def lcd(path)
       @local_paths << path
 
+      if @verbose
+        puts "Set the local working directory to #{path}"
+      end
+
       begin
         yield
       ensure
@@ -139,22 +154,26 @@ module Hutte
 
     def run_local_command(command, *args)
       options = args.first || {}
-      output = options.fetch(:output, true)
+      output = options.fetch(:output, true) || @verbose
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
       dry_run = options.fetch(:dry_run, @dry_run)
+      full_command = command.dup
+
+      @local_paths.reverse_each do |path|
+        full_command = "cd #{path} && #{full_command}"
+      end
+
+      printed_command = @verbose ? full_command : command
 
       if output
-        puts "   Executing local command '#{command}'"
+        puts "   Executing local command '#{printed_command}'"
       end
 
       if dry_run
         return ['', '']
       end
 
-      stdout, stderr, exit_code = LocalShell.run(
-                command,
-                :cd => @local_paths
-              )
+      stdout, stderr, exit_code = LocalShell.run(command)
 
       if output && !stdout.empty?
         puts "[STDOUT] #{stdout}\n"

@@ -27,6 +27,11 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 module Hutte
+  # There is some ambiguity here. Normally, the dry_run option cancels
+  # the execution of a local program. Here, we still call rsync, but
+  # pass the dry_run option. This means that the Hutte script may fail
+  # (e.g. if an unsupported option was passed to rsync), which
+  # normally isn't possible with dry_run enabled.
   def self.rsync(ssh, user, host, options)
     missing_options = [:local_dir, :remote_dir].reject do |name|
       options.has_key?(name)
@@ -45,6 +50,7 @@ module Hutte
     delete = options.fetch(:delete, false)
     dry_run = options.fetch(:dry_run, false)
     extra_options = options[:extra_options]
+    verbose = options.fetch(:verbose, false)
     dry_run = options.fetch(:dry_run, false)
 
     command = 'rsync -pthrv' # --rsh='ssh -p 22'
@@ -61,6 +67,10 @@ module Hutte
       command << ' --delete'
     end
 
+    if verbose
+      command << ' --verbose'
+    end
+
     if dry_run
       command << ' --dry-run'
     end
@@ -72,6 +82,6 @@ module Hutte
     command << " #{local_dir}"
     command << " #{user}@#{host}:#{remote_dir}"
 
-    ssh.local(command, dry_run: dry_run)
+    ssh.local(command, dry_run: false)
   end
 end
