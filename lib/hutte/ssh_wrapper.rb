@@ -59,6 +59,7 @@ module Hutte
       options = args.first || {}
       output = options.fetch(:output, true)
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
+      dry_run = options.fetch(:dry_run, @dry_run)
 
       if output
         puts "\n   Executing remote command '#{command}'"
@@ -71,7 +72,7 @@ module Hutte
 
       exit_status = nil
 
-      if @dry_run
+      if dry_run
         exit_status = 0
       else
         Hutte::ssh_exec(@session, command) do |callback|
@@ -140,12 +141,13 @@ module Hutte
       options = args.first || {}
       output = options.fetch(:output, true)
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
+      dry_run = options.fetch(:dry_run, @dry_run)
 
       if output
         puts "   Executing local command '#{command}'"
       end
 
-      if @dry_run
+      if dry_run
         return ['', '']
       end
 
