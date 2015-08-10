@@ -36,7 +36,7 @@ require 'hutte/ssh_exec'
 
 # TODO: print errors on stderr?
 module Hutte
-  class SshWrapper
+  class Dsl
     # An easier to use the File methods:
     # Hutte::File.exists?(s, path) becomes file_exists?(path)
     Hutte::File.singleton_methods(false).each do |name|
@@ -76,6 +76,7 @@ module Hutte
       exit_status = nil
 
       if dry_run
+        # FIXME: return ok_exit_statuses.first, in local() as well
         exit_status = 0
       else
         Hutte::ssh_exec(@session, full_command) do |callback|

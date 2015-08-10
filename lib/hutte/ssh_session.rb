@@ -28,7 +28,7 @@
 
 require 'highline/import'
 
-require 'hutte/ssh_wrapper'
+require 'hutte/dsl'
 
 module Hutte
   class SshSession
@@ -50,7 +50,7 @@ module Hutte
         @user,
         :password => prompt("Password for #{@user}@#{@host}")
       ) do |ssh|
-        wrapper = SshWrapper.new(
+        wrapper = Hutte::Dsl.new(
           @user, @host, ssh,
           dry_run: @dry_run,
           verbose: @verbose

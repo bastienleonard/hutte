@@ -30,7 +30,7 @@ require 'hutte/ssh_exec'
 
 module Hutte
   # Note: all the public/protected class methods defined in this class
-  # will end as file_* instance methods on SshWrapper
+  # will end as file_* instance methods on Hutte::Dsl
   class File
     def self.test(ssh, test_flag, path)
       ssh.run(
