@@ -35,7 +35,7 @@ module Hutte
     def self.test(ssh, test_flag, path)
       ssh.run(
         "test #{test_flag} #{path}",
-        output: true,
+        output: false,
         ok_exit_statuses: [0, 1]
       ) == 0
     end
