@@ -76,8 +76,7 @@ module Hutte
       exit_status = nil
 
       if dry_run
-        # FIXME: return ok_exit_statuses.first, in local() as well
-        exit_status = 0
+        return ok_exit_statuses.first
       else
         Hutte::ssh_exec(@session, full_command) do |callback|
           callback.on_stdout do |data|
@@ -171,7 +170,7 @@ module Hutte
       end
 
       if dry_run
-        return 0
+        return ok_exit_statuses.first
       end
 
       exit_status = LocalShell.run(command) do |callback|
