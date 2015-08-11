@@ -48,7 +48,7 @@ module Hutte
       Net::SSH.start(
         @host,
         @user,
-        :password => prompt("Password for #{@user}@#{@host}")
+        password: prompt("Password for #{@user}@#{@host}")
       ) do |ssh|
         wrapper = Hutte::Dsl.new(
           @user, @host, ssh,

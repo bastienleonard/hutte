@@ -97,8 +97,8 @@ module Hutte
               # We include the cds in the command, which will help if one of the
               # cds caused the error
               raise CommandFailureException.new(
-                      :code => status,
-                      :command => command
+                      code: status,
+                      command: command
                     )
             end
           end
@@ -187,8 +187,8 @@ module Hutte
       unless ok_exit_statuses.include?(exit_status)
         # TODO: include cds in the command
         raise CommandFailureException.new(
-                :code => exit_status,
-                :command => command
+                code: exit_status,
+                command: command
               )
       end
 
