@@ -134,8 +134,6 @@ module Hutte
       run_local_command(command, *args)
     end
 
-    # TODO: print dir change
-    # TODO: handle dir change failures
     def lcd(path)
       @local_paths << path
 
