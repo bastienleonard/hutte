@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Dsl &mdash; Hutte 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Hutte 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Reference" href="index.html" />
+    <link rel="next" title="File" href="file.html" />
+    <link rel="prev" title="SshSession" href="ssh_session.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-Hutte">
+<span id="dsl"></span><h1>Dsl<a class="headerlink" href="#module-Hutte" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Hutte::Dsl">
+<em class="property">class </em><code class="descclassname">Hutte::</code><code class="descname">Dsl</code><a class="headerlink" href="#Hutte::Dsl" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Hutte::Dsl#cd">
+<code class="descname">cd</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#cd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the remote directory.</p>
+<p>This doesn&#8217;t have any immediate effect. A block with remote
+commands should be passed; their working directory will be
+changed as intended.</p>
+<p>Calls to this method can be nested:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="n">cd</span> <span class="s1">&#39;/home&#39;</span> <span class="k">do</span>
+  <span class="n">run</span> <span class="s1">&#39;pwd&#39;</span> <span class="c1"># Prints /home</span>
+  <span class="n">cd</span> <span class="s1">&#39;bastien&#39;</span> <span class="k">do</span>
+    <span class="n">run</span> <span class="s1">&#39;pwd&#39;</span> <span class="c1"># Prints /home/bastienn</span>
+    <span class="n">run</span> <span class="s1">&#39;ls&#39;</span>  <span class="c1"># Prints the content of /home/bastien</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Hutte::Dsl#lcd">
+<code class="descname">lcd</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#lcd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as <a class="reference internal" href="#Hutte::Dsl#cd" title="Hutte::Dsl#cd"><code class="xref rb rb-meth docutils literal"><span class="pre">cd</span></code></a>, but locally.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Hutte::Dsl#local">
+<code class="descname">local</code><span class="sig-paren">(</span><em>command</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#local" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Hutte::Dsl#rsync">
+<code class="descname">rsync</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#rsync" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>options</em> is a hash that must include the following keys:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">remote_dir</span></code>: the remote directory that will be synced.</li>
+<li><code class="docutils literal"><span class="pre">local_dir</span></code>: the local directory that will be synced.</li>
+</ul>
+<p>These keys are optional:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">exclude</span></code>: an array of strings for the paths that rsync
+should ignore, using a <code class="docutils literal"><span class="pre">--exclude</span></code> option for each item in
+the array. [] by default.</li>
+<li><code class="docutils literal"><span class="pre">delete</span></code>: pass the <code class="docutils literal"><span class="pre">--delete</span></code> options to rsync. Of course,
+you should be very careful with this. False by default.</li>
+<li><code class="docutils literal"><span class="pre">dry_run</span></code>: pass the <code class="docutils literal"><span class="pre">--dry_run</span></code> options to rsync. False by default.</li>
+<li><code class="docutils literal"><span class="pre">verbose</span></code>: pass the <code class="docutils literal"><span class="pre">--verbose</span></code> options to rsync. False by default.</li>
+<li><code class="docutils literal"><span class="pre">extra_options</span></code>: a string that will be appended to the rsync
+command.</li>
+</ul>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Provide more information about options, caveats and
+rsync in general</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Hutte::Dsl#run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>command</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Reference</a><ul>
+      <li>Previous: <a href="ssh_session.html" title="previous chapter">SshSession</a></li>
+      <li>Next: <a href="file.html" title="next chapter">File</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/dsl.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Bastien Léonard.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="../_sources/reference/dsl.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Hutte 0.1 documentation" href="../index.html" />
     <link rel="up" title="Reference" href="index.html" />
-    <link rel="next" title="File" href="file.html" />
+    <link rel="next" title="Dsl" href="dsl.html" />
     <link rel="prev" title="Reference" href="index.html" />
    
   
@@ -46,19 +46,44 @@
 <em class="property">class </em><code class="descclassname">Hutte::</code><code class="descname">SshSession</code><a class="headerlink" href="#Hutte::SshSession" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="classmethod">
 <dt id="Hutte::SshSession.run">
-<em class="property">classmethod SshSession.</em><code class="descname">run</code><span class="sig-paren">(</span><em>user</em>, <em>host</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::SshSession.run" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod SshSession.</em><code class="descname">run</code><span class="sig-paren">(</span><em>user</em>, <em>host</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::SshSession.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Currently, a prompt always asks for a password, even if no
 password is required; in this case the user should press Enter
 without typing a password.</p>
-<p>Must be called with a block. It will be passed a DSL object with
-methods such as <em>run</em> and <em>cd</em>.</p>
+<p>Must be called with a block. It will be passed a <a class="reference internal" href="dsl.html#Hutte::Dsl" title="Hutte::Dsl"><code class="xref rb rb-class docutils literal"><span class="pre">Dsl</span></code></a>
+instance with methods such as <a class="reference internal" href="dsl.html#Hutte::Dsl#run" title="Hutte::Dsl#run"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#run</span></code></a> and
+<a class="reference internal" href="dsl.html#Hutte::Dsl#cd" title="Hutte::Dsl#cd"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#cd</span></code></a>.</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">cd</span> <span class="s1">&#39;/home&#39;</span> <span class="k">do</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">run</span> <span class="s1">&#39;pwd&#39;</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">run</span> <span class="s1">&#39;ls -l&#39;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
 <p>If the block accepts no parameters, its <em>self</em> value will be
 bound to the DSL object instead, which allows for a less verbose
-style.</p>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Document SshWrapper, cd, run and so on</p>
+style. This is the recommended way, at least for large scripts.</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">cd</span> <span class="s1">&#39;/home&#39;</span> <span class="k">do</span>
+    <span class="n">run</span> <span class="s1">&#39;pwd&#39;</span>
+    <span class="n">run</span> <span class="s1">&#39;ls -l&#39;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
 </div>
+<p><em>options</em> is an optional hash which can include the following flags:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">dry_run</span></code>: run the script normally, but don&#8217;t actually run
+any commands. <a class="reference internal" href="dsl.html#Hutte::Dsl#rsync" title="Hutte::Dsl#rsync"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#rsync</span></code></a> is the exception: the rsync
+program will be called, but with the <code class="docutils literal"><span class="pre">--dry_run</span></code> option
+(which can also be accomplished with <a class="reference internal" href="dsl.html#Hutte::Dsl#rsync" title="Hutte::Dsl#rsync"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#rsync</span></code></a>&#8216;s
+<code class="docutils literal"><span class="pre">dry_run</span></code> option). Commands will always succeed, so it&#8217;s not
+always possible to test all possibilities with this
+option. False by default.</li>
+<li><code class="docutils literal"><span class="pre">verbose</span></code>: print additional information, may be useful for
+debugging. False by default.</li>
+</ul>
 </dd></dl>
 
 </dd></dl>
@@ -76,7 +101,7 @@ style.</p>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Reference</a><ul>
       <li>Previous: <a href="index.html" title="previous chapter">Reference</a></li>
-      <li>Next: <a href="file.html" title="next chapter">File</a></li>
+      <li>Next: <a href="dsl.html" title="next chapter">Dsl</a></li>
   </ul></li>
   </ul></li>
 </ul>
