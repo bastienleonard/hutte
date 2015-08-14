@@ -72,15 +72,21 @@ changed as intended.</p>
 <dl class="method">
 <dt id="Hutte::Dsl#local">
 <code class="descname">local</code><span class="sig-paren">(</span><em>command</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#local" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Same as <a class="reference internal" href="#Hutte::Dsl#run" title="Hutte::Dsl#run"><code class="xref rb rb-meth docutils literal"><span class="pre">run</span></code></a>, but locally.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="Hutte::Dsl#rsync">
 <code class="descname">rsync</code><span class="sig-paren">(</span><em>options</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#rsync" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>options</em> is a hash that must include the following keys:</p>
+<dd><p>Call the rsync tool to synchronize a local directory with the
+server.</p>
+<p><em>options</em> is a hash that must include the following keys:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">remote_dir</span></code>: the remote directory that will be synced.</li>
-<li><code class="docutils literal"><span class="pre">local_dir</span></code>: the local directory that will be synced.</li>
+<li><code class="docutils literal"><span class="pre">local_dir</span></code>: the local directory that will be synced. Add a
+trailing <code class="docutils literal"><span class="pre">/</span></code> if you want the content of <code class="docutils literal"><span class="pre">local_dir</span></code> to be
+dropped inside <code class="docutils literal"><span class="pre">remote_dir</span></code>. Otherwise, rsync will place the
+files at <code class="docutils literal"><span class="pre">remote_dir/local_dir</span></code>.</li>
 </ul>
 <p>These keys are optional:</p>
 <ul class="simple">
@@ -94,17 +100,25 @@ you should be very careful with this. False by default.</li>
 <li><code class="docutils literal"><span class="pre">extra_options</span></code>: a string that will be appended to the rsync
 command.</li>
 </ul>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Provide more information about options, caveats and
-rsync in general</p>
-</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="Hutte::Dsl#run">
 <code class="descname">run</code><span class="sig-paren">(</span><em>command</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Execute <em>command</em> (a string) on the server.</p>
+<p>Options include:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">output</span></code>: whether the output of the command should be
+printed (currently, the content of stderr is always
+printed). True by default.</li>
+<li><code class="docutils literal"><span class="pre">ok_exit_statuses</span></code>: an array of process exit statuses that
+indicate success. [0] by default.</li>
+<li><code class="docutils literal"><span class="pre">dry_run</span></code>: the value you set in <a class="reference internal" href="ssh_session.html#Hutte::SshSession" title="Hutte::SshSession"><code class="xref rb rb-class docutils literal"><span class="pre">SshSession</span></code></a>&#8216;s
+options. May be overriden.</li>
+<li><code class="docutils literal"><span class="pre">verbose</span></code>: the value you set in <a class="reference internal" href="ssh_session.html#Hutte::SshSession" title="Hutte::SshSession"><code class="xref rb rb-class docutils literal"><span class="pre">SshSession</span></code></a>&#8216;s
+options. May be overriden.</li>
+</ul>
+</dd></dl>
 
 </dd></dl>
 

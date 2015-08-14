@@ -37,7 +37,7 @@ SshSession
            end
          end
 
-      *options* is an optional hash which can include the following flags:
+      Options include:
 
       * ``dry_run``: run the script normally, but don't actually run
         any commands. :meth:`Dsl#rsync` is the exception: the rsync
