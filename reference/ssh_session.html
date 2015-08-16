@@ -46,10 +46,21 @@
 <em class="property">class </em><code class="descclassname">Hutte::</code><code class="descname">SshSession</code><a class="headerlink" href="#Hutte::SshSession" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="classmethod">
 <dt id="Hutte::SshSession.run">
-<em class="property">classmethod SshSession.</em><code class="descname">run</code><span class="sig-paren">(</span><em>user</em>, <em>host</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::SshSession.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Currently, a prompt always asks for a password, even if no
-password is required; in this case the user should press Enter
-without typing a password.</p>
+<em class="property">classmethod SshSession.</em><code class="descname">run</code><span class="sig-paren">(</span><em>user</em>, <em>host</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::SshSession.run" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>args</em> can contain at most two values. A string value is
+interpreted as a password; a hash value is interpreted as an
+options hash.</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span>
+<span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">)</span>
+<span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="ss">verbose</span><span class="p">:</span> <span class="kp">true</span> <span class="p">})</span>
+<span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="ss">dry_run</span><span class="p">:</span> <span class="kp">true</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>If no password is provided, a prompt asks the user for a
+password, <em>even if no password is required</em>; in this case the
+user should press Enter without typing a password.</p>
 <p>Must be called with a block. It will be passed a <a class="reference internal" href="dsl.html#Hutte::Dsl" title="Hutte::Dsl"><code class="xref rb rb-class docutils literal"><span class="pre">Dsl</span></code></a>
 instance with methods such as <a class="reference internal" href="dsl.html#Hutte::Dsl#run" title="Hutte::Dsl#run"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#run</span></code></a> and
 <a class="reference internal" href="dsl.html#Hutte::Dsl#cd" title="Hutte::Dsl#cd"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#cd</span></code></a>.</p>

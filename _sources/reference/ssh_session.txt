@@ -5,11 +5,24 @@ SshSession
 
 .. class:: SshSession
 
-   .. classmethod:: run(user, host[, options])
+   .. classmethod:: run(user, host, *args)
 
-      Currently, a prompt always asks for a password, even if no
-      password is required; in this case the user should press Enter
-      without typing a password.
+      *args* can contain at most two values. A string value is
+      interpreted as a password; a hash value is interpreted as an
+      options hash.
+
+      ::
+
+         Hutte::SshSession.run('user', 'host')
+         Hutte::SshSession.run('user', 'host', 'password')
+         Hutte::SshSession.run('user', 'host', { verbose: true })
+         Hutte::SshSession.run('user', 'host', 'password', {
+           dry_run: true
+         })
+
+      If no password is provided, a prompt asks the user for a
+      password, *even if no password is required*; in this case the
+      user should press Enter without typing a password.
 
       Must be called with a block. It will be passed a :class:`Dsl`
       instance with methods such as :meth:`Dsl#run` and
