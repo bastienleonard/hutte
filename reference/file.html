@@ -38,13 +38,14 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="file">
-<h1>File<a class="headerlink" href="#file" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Explain the <em>ssh</em> parameter</p>
+  <div class="section" id="module-Hutte">
+<span id="file"></span><h1>File<a class="headerlink" href="#module-Hutte" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Each of these methods are forwarded to <a class="reference internal" href="dsl.html#Hutte::Dsl" title="Hutte::Dsl"><code class="xref rb rb-class docutils literal"><span class="pre">Dsl</span></code></a>, e.g. you can
+use <code class="docutils literal"><span class="pre">dsl.file_exists?(path)</span></code> instead <code class="docutils literal"><span class="pre">File.exists?(dsl,</span> <span class="pre">path)</span></code>.</p>
 </div>
-<span class="target" id="module-Hutte"></span><dl class="class">
+<dl class="class">
 <dt id="Hutte::File">
 <em class="property">class </em><code class="descclassname">Hutte::</code><code class="descname">File</code><a class="headerlink" href="#Hutte::File" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remote file utilities. The Unix notion of file is used here, where
@@ -52,61 +53,61 @@ a directory is considered as a special kind of file.</p>
 <p>This class is effectively a wrapper around the <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html">test utility</a>.</p>
 <dl class="classmethod">
 <dt id="Hutte::File.exists?">
-<em class="property">classmethod File.</em><code class="descname">exists?</code><span class="sig-paren">(</span><em>ssh</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.exists?" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">exists?</code><span class="sig-paren">(</span><em>dsl</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.exists?" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if <em>path</em> exists.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="Hutte::File.is_dir?">
-<em class="property">classmethod File.</em><code class="descname">is_dir?</code><span class="sig-paren">(</span><em>ssh</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_dir?" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">is_dir?</code><span class="sig-paren">(</span><em>dsl</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_dir?" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if <em>path</em> is a directory.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="Hutte::File.has_content?">
-<em class="property">classmethod File.</em><code class="descname">has_content?</code><span class="sig-paren">(</span><em>ssh</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.has_content?" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">has_content?</code><span class="sig-paren">(</span><em>dsl</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.has_content?" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if <em>path</em> has a size greater than zero.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="Hutte::File.is_link?">
-<em class="property">classmethod File.</em><code class="descname">is_link?</code><span class="sig-paren">(</span><em>ssh</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_link?" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">is_link?</code><span class="sig-paren">(</span><em>dsl</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_link?" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if <em>path</em> is symbolic link.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="Hutte::File.is_readable?">
-<em class="property">classmethod File.</em><code class="descname">is_readable?</code><span class="sig-paren">(</span><em>ssh</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_readable?" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">is_readable?</code><span class="sig-paren">(</span><em>dsl</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_readable?" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if read permission is granted for <em>path</em>.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="Hutte::File.is_writable?">
-<em class="property">classmethod File.</em><code class="descname">is_writable?</code><span class="sig-paren">(</span><em>ssh</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_writable?" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">is_writable?</code><span class="sig-paren">(</span><em>dsl</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_writable?" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if write permission is granted for <em>path</em>.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="Hutte::File.is_executable?">
-<em class="property">classmethod File.</em><code class="descname">is_executable?</code><span class="sig-paren">(</span><em>ssh</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_executable?" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">is_executable?</code><span class="sig-paren">(</span><em>dsl</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_executable?" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if execute (or search) permission is granted for <em>path</em>.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="Hutte::File.is_socket?">
-<em class="property">classmethod File.</em><code class="descname">is_socket?</code><span class="sig-paren">(</span><em>ssh</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_socket?" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">is_socket?</code><span class="sig-paren">(</span><em>dsl</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.is_socket?" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return true if <em>path</em> is a socket.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="Hutte::File.test">
-<em class="property">classmethod File.</em><code class="descname">test</code><span class="sig-paren">(</span><em>ssh</em>, <em>test_flag</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.test" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod File.</em><code class="descname">test</code><span class="sig-paren">(</span><em>dsl</em>, <em>test_flag</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::File.test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Call the <a class="reference external" href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/test.html">test utility</a>
 on the remote server, passing <em>test_flag</em> (e.g. &#8216;-s&#8217;) and <em>path</em>
 as arguments.</p>
 <p>Return the result of the evaluation. This may be somewhat
 confusing, as the test utility returns 0 if the expression
-evaluated to true.  As an example, <code class="docutils literal"><span class="pre">test(ssh,</span> <span class="pre">'-e',</span>
+evaluated to true.  As an example, <code class="docutils literal"><span class="pre">test(dsl,</span> <span class="pre">'-e',</span>
 <span class="pre">'/some/path')</span></code> would return true if <em>/some/path</em> exists.</p>
 <p>The other methods all call this one with the appropriate <em>flag</em>
 value. This method is intended as a way to use the less common

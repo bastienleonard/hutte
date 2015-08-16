@@ -5,6 +5,13 @@ Dsl
 
 .. class:: Dsl
 
+   The block you pass to :meth:`SshSession.run` is given an instance
+   of this class, and this is the main API in Hutte.
+
+   This class conveniently includes the methods from the :class:`File`
+   class, e.g. ``dsl.file_exists?(path)`` will call
+   :meth:`File.exists?`.
+
    .. method:: cd(path)
 
       Change the remote directory.

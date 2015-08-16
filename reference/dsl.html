@@ -44,7 +44,12 @@
 <dl class="class">
 <dt id="Hutte::Dsl">
 <em class="property">class </em><code class="descclassname">Hutte::</code><code class="descname">Dsl</code><a class="headerlink" href="#Hutte::Dsl" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>The block you pass to <a class="reference internal" href="ssh_session.html#Hutte::SshSession.run" title="Hutte::SshSession.run"><code class="xref rb rb-meth docutils literal"><span class="pre">SshSession.run</span></code></a> is given an instance
+of this class, and this is the main API in Hutte.</p>
+<p>This class conveniently includes the methods from the <a class="reference internal" href="file.html#Hutte::File" title="Hutte::File"><code class="xref rb rb-class docutils literal"><span class="pre">File</span></code></a>
+class, e.g. <code class="docutils literal"><span class="pre">dsl.file_exists?(path)</span></code> will call
+<a class="reference internal" href="file.html#Hutte::File.exists?" title="Hutte::File.exists?"><code class="xref rb rb-meth docutils literal"><span class="pre">File.exists?</span></code></a>.</p>
+<dl class="method">
 <dt id="Hutte::Dsl#cd">
 <code class="descname">cd</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#cd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change the remote directory.</p>
