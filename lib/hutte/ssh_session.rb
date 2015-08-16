@@ -37,18 +37,19 @@ module Hutte
     end
 
     def initialize(user, host, *args)
-      options = args.first || {}
-      @verbose = options.fetch(:verbose, false)
-      @dry_run = options.fetch(:dry_run, false)
       @user = user
       @host = host
+      @password = args.find { |x| x.is_a?(String) }
+      options = args.find { |x| x.is_a?(Hash) } || {}
+      @verbose = options.fetch(:verbose, false)
+      @dry_run = options.fetch(:dry_run, false)
     end
 
     def run(&block)
       Net::SSH.start(
         @host,
         @user,
-        password: prompt("Password for #{@user}@#{@host}")
+        password: @password || prompt("Password for #{@user}@#{@host}")
       ) do |ssh|
         wrapper = Hutte::Dsl.new(
           @user, @host, ssh,
