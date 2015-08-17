@@ -74,7 +74,7 @@ module Hutte
       @stderr.close
       @stderr = nil
       pid_, status = Process::waitpid2(@pid)
-      status
+      status.exitstatus
     end
   end
 end
