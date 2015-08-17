@@ -182,10 +182,9 @@ module Hutte
       end
 
       unless ok_exit_statuses.include?(exit_status)
-        # TODO: include cds in the command
         raise CommandFailureException.new(
                 code: exit_status,
-                command: command
+                command: full_command
               )
       end
 
