@@ -171,7 +171,7 @@ module Hutte
         return ok_exit_statuses.first
       end
 
-      exit_status = LocalShell.run(command) do |callback|
+      exit_status = LocalShell.run(full_command) do |callback|
         callback.on_stdout do |data|
           if output
             puts "[STDOUT] #{data}\n\n"
