@@ -83,6 +83,12 @@ style. This is the recommended way, at least for large scripts.</p>
 <span class="k">end</span>
 </pre></div>
 </div>
+<p>If you have an SSH config file (e.g. in <code class="docutils literal"><span class="pre">~/.ssh/config</span></code>), it
+can be used by passing its <code class="docutils literal"><span class="pre">Host</span></code> value instead of the actual
+hostname. The username should be nil if it is to be deduced from
+a config file (<code class="docutils literal"><span class="pre">''</span></code> won&#8217;t work). Not all options can be read,
+see
+<a class="reference external" href="https://net-ssh.github.io/ssh/v2/api/classes/Net/SSH/Config.html">https://net-ssh.github.io/ssh/v2/api/classes/Net/SSH/Config.html</a>.</p>
 <p>Options include:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">dry_run</span></code>: run the script normally, but don&#8217;t actually run

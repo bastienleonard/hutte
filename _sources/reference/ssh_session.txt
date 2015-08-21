@@ -50,6 +50,13 @@ SshSession
            end
          end
 
+      If you have an SSH config file (e.g. in ``~/.ssh/config``), it
+      can be used by passing its ``Host`` value instead of the actual
+      hostname. The username should be nil if it is to be deduced from
+      a config file (``''`` won't work). Not all options can be read,
+      see
+      https://net-ssh.github.io/ssh/v2/api/classes/Net/SSH/Config.html.
+
       Options include:
 
       * ``dry_run``: run the script normally, but don't actually run
