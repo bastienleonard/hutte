@@ -29,6 +29,7 @@
 require 'net/ssh'
 
 require 'hutte/command_failure_exception'
+require 'hutte/command_result'
 require 'hutte/file'
 require 'hutte/local_shell'
 require 'hutte/rsync'
@@ -74,6 +75,8 @@ module Hutte
       end
 
       exit_status = nil
+      stdout = ''
+      stderr = ''
 
       if dry_run
         return ok_exit_statuses.first
@@ -83,8 +86,11 @@ module Hutte
             if output
               puts "[STDOUT] #{data}\n\n"
             end
+
+            stdout << data
           end.on_stderr do |data|
             puts "[STDERR] #{data}\n\n"
+            stderr << data
           end.on_exit_status_received do |status|
             exit_status = status
 
@@ -104,7 +110,11 @@ module Hutte
         end
       end
 
-      exit_status
+      CommandResult.new(
+        stdout: stdout,
+        stderr: stderr,
+        exit_status: exit_status
+      )
     end
 
     def cd(path)
@@ -171,13 +181,18 @@ module Hutte
         return ok_exit_statuses.first
       end
 
+      stdout = ''
+      stderr = ''
       exit_status = LocalShell.run(full_command) do |callback|
         callback.on_stdout do |data|
           if output
             puts "[STDOUT] #{data}\n\n"
           end
+
+          stdout << data
         end.on_stderr do |data|
           puts "[STDERR] #{data}\n\n"
+          stderr << data
         end
       end
 
@@ -188,7 +203,11 @@ module Hutte
               )
       end
 
-      exit_status
+      CommandResult.new(
+        stdout: stdout,
+        stderr: stderr,
+        exit_status: exit_status
+      )
     end
   end
 end

@@ -65,7 +65,8 @@ Dsl
 
    .. method:: run(command[, options])
 
-      Execute *command* (a string) on the server.
+      Execute *command* (a string) on the server, blocking until it is
+      completed and return a :class:`CommandResult` instance.
 
       Options include:
 
