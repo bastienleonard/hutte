@@ -15,8 +15,11 @@ stable is currently massively lagging behind master.
 
 ## Documentation
 
-The master branch features are documented here:
+Documentation for the master branch is available here:
 https://bastienleonard.github.io/hutte
+
+Make sure you read the
+[Caveats](https://bastienleonard.github.io/hutte/caveats.html) page!
 
 ## Bug tracker
 

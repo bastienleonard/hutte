@@ -15,6 +15,7 @@ Contents:
 
    introduction
    installation
+   caveats
    reference/index
 
 Indices and tables
