@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Hutte 0.1 documentation" href="../index.html" />
     <link rel="up" title="Reference" href="index.html" />
-    <link rel="next" title="File" href="file.html" />
+    <link rel="next" title="CommandResult" href="command_result.html" />
     <link rel="prev" title="SshSession" href="ssh_session.html" />
    
   
@@ -110,7 +110,8 @@ command.</li>
 <dl class="method">
 <dt id="Hutte::Dsl#run">
 <code class="descname">run</code><span class="sig-paren">(</span><em>command</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute <em>command</em> (a string) on the server.</p>
+<dd><p>Execute <em>command</em> (a string) on the server, blocking until it is
+completed and return a <a class="reference internal" href="command_result.html#Hutte::CommandResult" title="Hutte::CommandResult"><code class="xref rb rb-class docutils literal"><span class="pre">CommandResult</span></code></a> instance.</p>
 <p>Options include:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">output</span></code>: whether the output of the command should be
@@ -140,7 +141,7 @@ options. May be overriden.</li>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Reference</a><ul>
       <li>Previous: <a href="ssh_session.html" title="previous chapter">SshSession</a></li>
-      <li>Next: <a href="file.html" title="next chapter">File</a></li>
+      <li>Next: <a href="command_result.html" title="next chapter">CommandResult</a></li>
   </ul></li>
   </ul></li>
 </ul>
