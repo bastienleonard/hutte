@@ -37,7 +37,7 @@ module Hutte
         "test #{test_flag} #{path}",
         output: false,
         ok_exit_statuses: [0, 1]
-      ) == 0
+      ).exit_status == 0
     end
 
     def self.exists?(ssh, path)
