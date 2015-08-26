@@ -79,7 +79,7 @@ module Hutte
       stderr = ''
 
       if dry_run
-        return ok_exit_statuses.first
+        exit_status = ok_exit_statuses.first
       else
         Hutte::ssh_exec(@session, full_command) do |callback|
           callback.on_stdout do |data|
@@ -177,30 +177,32 @@ module Hutte
         puts "   Executing local command '#{printed_command}'"
       end
 
-      if dry_run
-        return ok_exit_statuses.first
-      end
-
+      exit_status = nil
       stdout = ''
       stderr = ''
-      exit_status = LocalShell.run(full_command) do |callback|
-        callback.on_stdout do |data|
-          if output
-            puts "[STDOUT] #{data}\n\n"
+
+      if dry_run
+        exit_status = ok_exit_statuses.first
+      else
+        exit_status = LocalShell.run(full_command) do |callback|
+          callback.on_stdout do |data|
+            if output
+              puts "[STDOUT] #{data}\n\n"
+            end
+
+            stdout << data
+          end.on_stderr do |data|
+            puts "[STDERR] #{data}\n\n"
+            stderr << data
           end
-
-          stdout << data
-        end.on_stderr do |data|
-          puts "[STDERR] #{data}\n\n"
-          stderr << data
         end
-      end
 
-      unless ok_exit_statuses.include?(exit_status)
-        raise CommandFailureException.new(
-                code: exit_status,
-                command: full_command
-              )
+        unless ok_exit_statuses.include?(exit_status)
+          raise CommandFailureException.new(
+                  code: exit_status,
+                  command: full_command
+                )
+        end
       end
 
       CommandResult.new(
