@@ -84,12 +84,12 @@ module Hutte
         Hutte::ssh_exec(@session, full_command) do |callback|
           callback.on_stdout do |data|
             if output
-              puts "[STDOUT] #{data}\n\n"
+              print data
             end
 
             stdout << data
           end.on_stderr do |data|
-            puts "[STDERR] #{data}\n\n"
+            print data
             stderr << data
           end.on_exit_status_received do |status|
             exit_status = status
@@ -187,12 +187,12 @@ module Hutte
         exit_status = LocalShell.run(full_command) do |callback|
           callback.on_stdout do |data|
             if output
-              puts "[STDOUT] #{data}\n\n"
+              print data
             end
 
             stdout << data
           end.on_stderr do |data|
-            puts "[STDERR] #{data}\n\n"
+            print data
             stderr << data
           end
         end
