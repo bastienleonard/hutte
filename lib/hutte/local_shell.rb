@@ -55,13 +55,13 @@ module Hutte
           begin
             s = @stdout.read_nonblock(1024)
             @setup.on_stdout.call(s)
-          rescue IO::EAGAINWaitReadable
+          rescue IO::WaitReadable
           end
 
           begin
             s = @stderr.read_nonblock(1024)
             @setup.on_stderr.call(s)
-          rescue IO::EAGAINWaitReadable
+          rescue IO::WaitReadable
           end
 
           sleep(0.1)
