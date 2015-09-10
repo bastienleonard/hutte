@@ -103,7 +103,7 @@ module Hutte
               # cds caused the error
               raise CommandFailureException.new(
                       code: status,
-                      command: command
+                      command: full_command
                     )
             end
           end
