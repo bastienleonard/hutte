@@ -41,8 +41,7 @@ module Hutte
         setup.on_exit_status_received.call(status)
       end
 
-      # TODO: make the shell configurable (e.g. for FreeBSD)
-      channel.exec('bash -l -c "' + command + '"') do |channel, success|
+      channel.exec(command) do |channel, success|
         raise 'Unimplemented error' unless success  # FIXME
 
         channel.on_data do |channel, data|

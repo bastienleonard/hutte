@@ -62,7 +62,9 @@ module Hutte
       output = options.fetch(:output, true) || @verbose
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
       dry_run = options.fetch(:dry_run, @dry_run)
-      full_command = command.dup
+
+      # TODO: make the shell configurable (e.g. for FreeBSD)
+      full_command = 'bash -l -c "' + command + '"'
 
       @remote_paths.reverse_each do |path|
         full_command = "cd #{path} && #{full_command}"
