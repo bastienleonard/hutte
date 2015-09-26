@@ -38,7 +38,7 @@ require 'hutte/ssh_exec'
 # TODO: print errors on stderr?
 module Hutte
   class Dsl
-    # An easier to use the File methods:
+    # An easier way to use the File methods:
     # Hutte::File.exists?(s, path) becomes file_exists?(path)
     Hutte::File.singleton_methods(false).each do |name|
       define_method "file_#{name}" do |*args|
