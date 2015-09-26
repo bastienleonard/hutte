@@ -123,7 +123,7 @@ module Hutte
       @remote_paths << path
 
       if @verbose
-        puts "Set the remote working directory to #{path}"
+        puts "Move to remote directory #{path}"
       end
 
       begin
@@ -150,7 +150,7 @@ module Hutte
       @local_paths << path
 
       if @verbose
-        puts "Set the local working directory to #{path}"
+        puts "Move to local directory #{path}"
       end
 
       begin
