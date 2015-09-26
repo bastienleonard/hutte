@@ -73,7 +73,7 @@ module Hutte
       printed_command = @verbose ? full_command : command
 
       if output
-        puts "\n   Executing remote command '#{printed_command}'"
+        puts "\n   Executing remote command #{printed_command}"
       end
 
       exit_status = nil
@@ -176,7 +176,7 @@ module Hutte
       printed_command = @verbose ? full_command : command
 
       if output
-        puts "   Executing local command '#{printed_command}'"
+        puts "   Executing local command #{printed_command}"
       end
 
       exit_status = nil
