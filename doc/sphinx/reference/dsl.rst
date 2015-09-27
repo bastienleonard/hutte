@@ -36,7 +36,20 @@ Dsl
 
    .. method:: local(command[, options])
 
-      Same as :meth:`run`, but locally.
+      Execute *command* (a string) locally, blocking until it is
+      completed and return a :class:`CommandResult` instance.
+
+      Options include:
+
+      * ``output``: whether the output of the command should be
+        printed (currently, the content of stderr is always
+        printed). True by default.
+      * ``ok_exit_statuses``: an array of process exit statuses that
+        indicate success. [0] by default.
+      * ``dry_run``: the value you set in :class:`SshSession`'s
+        options. May be overriden.
+      * ``verbose``: the value you set in :class:`SshSession`'s
+        options. May be overriden.
 
    .. method:: rsync(options)
 
@@ -68,6 +81,14 @@ Dsl
       Execute *command* (a string) on the server, blocking until it is
       completed and return a :class:`CommandResult` instance.
 
+      .. highlight:: none
+
+      The final command will look like this::
+
+         bash -l -c "{escaped_command}"
+
+      .. highlight:: ruby
+
       Options include:
 
       * ``output``: whether the output of the command should be
@@ -79,3 +100,6 @@ Dsl
         options. May be overriden.
       * ``verbose``: the value you set in :class:`SshSession`'s
         options. May be overriden.
+      * ``characters_to_escape``: an array of characters that should
+        be escaped (by prepending them with ``\``) before running the
+        command. Currently, only double quotes are escaped by default.
