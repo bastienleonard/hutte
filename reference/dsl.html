@@ -77,7 +77,20 @@ changed as intended.</p>
 <dl class="method">
 <dt id="Hutte::Dsl#local">
 <code class="descname">local</code><span class="sig-paren">(</span><em>command</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#local" title="Permalink to this definition">¶</a></dt>
-<dd><p>Same as <a class="reference internal" href="#Hutte::Dsl#run" title="Hutte::Dsl#run"><code class="xref rb rb-meth docutils literal"><span class="pre">run</span></code></a>, but locally.</p>
+<dd><p>Execute <em>command</em> (a string) locally, blocking until it is
+completed and return a <a class="reference internal" href="command_result.html#Hutte::CommandResult" title="Hutte::CommandResult"><code class="xref rb rb-class docutils literal"><span class="pre">CommandResult</span></code></a> instance.</p>
+<p>Options include:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">output</span></code>: whether the output of the command should be
+printed (currently, the content of stderr is always
+printed). True by default.</li>
+<li><code class="docutils literal"><span class="pre">ok_exit_statuses</span></code>: an array of process exit statuses that
+indicate success. [0] by default.</li>
+<li><code class="docutils literal"><span class="pre">dry_run</span></code>: the value you set in <a class="reference internal" href="ssh_session.html#Hutte::SshSession" title="Hutte::SshSession"><code class="xref rb rb-class docutils literal"><span class="pre">SshSession</span></code></a>&#8216;s
+options. May be overriden.</li>
+<li><code class="docutils literal"><span class="pre">verbose</span></code>: the value you set in <a class="reference internal" href="ssh_session.html#Hutte::SshSession" title="Hutte::SshSession"><code class="xref rb rb-class docutils literal"><span class="pre">SshSession</span></code></a>&#8216;s
+options. May be overriden.</li>
+</ul>
 </dd></dl>
 
 <dl class="method">
@@ -112,6 +125,10 @@ command.</li>
 <code class="descname">run</code><span class="sig-paren">(</span><em>command</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute <em>command</em> (a string) on the server, blocking until it is
 completed and return a <a class="reference internal" href="command_result.html#Hutte::CommandResult" title="Hutte::CommandResult"><code class="xref rb rb-class docutils literal"><span class="pre">CommandResult</span></code></a> instance.</p>
+<p>The final command will look like this:</p>
+<div class="highlight-none"><div class="highlight"><pre>bash -l -c &quot;{escaped_command}&quot;
+</pre></div>
+</div>
 <p>Options include:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">output</span></code>: whether the output of the command should be
@@ -123,6 +140,9 @@ indicate success. [0] by default.</li>
 options. May be overriden.</li>
 <li><code class="docutils literal"><span class="pre">verbose</span></code>: the value you set in <a class="reference internal" href="ssh_session.html#Hutte::SshSession" title="Hutte::SshSession"><code class="xref rb rb-class docutils literal"><span class="pre">SshSession</span></code></a>&#8216;s
 options. May be overriden.</li>
+<li><code class="docutils literal"><span class="pre">characters_to_escape</span></code>: an array of characters that should
+be escaped (by prepending them with <code class="docutils literal"><span class="pre">\</span></code>) before running the
+command. Currently, only double quotes are escaped by default.</li>
 </ul>
 </dd></dl>
 

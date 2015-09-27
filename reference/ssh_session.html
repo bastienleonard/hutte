@@ -95,9 +95,9 @@ see
 any commands. <a class="reference internal" href="dsl.html#Hutte::Dsl#rsync" title="Hutte::Dsl#rsync"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#rsync</span></code></a> is the exception: the rsync
 program will be called, but with the <code class="docutils literal"><span class="pre">--dry_run</span></code> option
 (which can also be accomplished with <a class="reference internal" href="dsl.html#Hutte::Dsl#rsync" title="Hutte::Dsl#rsync"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#rsync</span></code></a>&#8216;s
-<code class="docutils literal"><span class="pre">dry_run</span></code> option). Commands will always succeed, so it&#8217;s not
-always possible to test all possibilities with this
-option. False by default.</li>
+<code class="docutils literal"><span class="pre">dry_run</span></code> option). Note that this mode is pretty limited:
+commands will always succeed and won&#8217;t produce any
+output. False by default.</li>
 <li><code class="docutils literal"><span class="pre">verbose</span></code>: print additional information, may be useful for
 debugging. False by default.</li>
 </ul>
