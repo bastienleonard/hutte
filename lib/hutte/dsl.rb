@@ -63,6 +63,7 @@ module Hutte
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
       dry_run = options.fetch(:dry_run, @dry_run)
       characters_to_escape = options.fetch(:characters_to_escape, %w("))
+      shell = options.fetch(:shell, 'bash -l -c "{{command}}"')
 
       escaped_command = nil
 
@@ -75,8 +76,11 @@ module Hutte
         escaped_command = command
       end
 
-      # TODO: make the shell configurable (e.g. for FreeBSD)
-      full_command = 'bash -l -c "' + escaped_command + '"'
+      if shell == false
+        full_command = escaped_command
+      else
+        full_command = shell.gsub('{{command}}', escaped_command)
+      end
 
       @remote_paths.reverse_each do |path|
         full_command = "cd #{path} && #{full_command}"
