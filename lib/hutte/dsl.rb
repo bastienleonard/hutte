@@ -53,8 +53,8 @@ module Hutte
       @session = ssh
       @remote_paths = []
       @local_paths = []
-      @verbose = options.fetch(:verbose, false)
-      @dry_run = options.fetch(:dry_run, false)
+      @verbose = options[:verbose]
+      @dry_run = options[:dry_run]
     end
 
     def run(command, *args)
