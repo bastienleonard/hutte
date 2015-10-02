@@ -140,15 +140,10 @@ indicate success. [0] by default.</li>
 options. May be overriden.</li>
 <li><code class="docutils literal"><span class="pre">verbose</span></code>: the value you set in <a class="reference internal" href="ssh_session.html#Hutte::SshSession" title="Hutte::SshSession"><code class="xref rb rb-class docutils literal"><span class="pre">SshSession</span></code></a>&#8216;s
 options. May be overriden.</li>
-<li><code class="docutils literal"><span class="pre">characters_to_escape</span></code>: an array of characters that should
-be escaped (by prepending them with <code class="docutils literal"><span class="pre">\</span></code>) before running the
-command. Currently, only double quotes are escaped by default.</li>
-<li><code class="docutils literal"><span class="pre">shell</span></code>: this is effectively a way to wrap the command in
-another string, though the goal is to select the shell and its
-options. <code class="docutils literal"><span class="pre">false</span></code> can be passed; this will execute the
-command without any &#8220;wrapping&#8221;. Occurences of <code class="docutils literal"><span class="pre">{{command}}</span></code>
-will be replaced by the command to be executed. <code class="docutils literal"><span class="pre">bash</span> <span class="pre">-l</span> <span class="pre">-c</span>
-<span class="pre">&quot;{{command}}&quot;</span></code> by default.</li>
+<li><code class="docutils literal"><span class="pre">characters_to_escape</span></code>: the value you set in <a class="reference internal" href="ssh_session.html#Hutte::SshSession" title="Hutte::SshSession"><code class="xref rb rb-class docutils literal"><span class="pre">SshSession</span></code></a>&#8216;s
+options. May be overriden.</li>
+<li><code class="docutils literal"><span class="pre">shell</span></code>: the value you set in <a class="reference internal" href="ssh_session.html#Hutte::SshSession" title="Hutte::SshSession"><code class="xref rb rb-class docutils literal"><span class="pre">SshSession</span></code></a>&#8216;s
+options. May be overriden.</li>
 </ul>
 </dd></dl>
 
