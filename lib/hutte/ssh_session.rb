@@ -43,6 +43,8 @@ module Hutte
       options = args.find { |x| x.is_a?(Hash) } || {}
       @verbose = options.fetch(:verbose, false)
       @dry_run = options.fetch(:dry_run, false)
+      @characters_to_escape = options.fetch(:characters_to_escape, %w("))
+      @shell = options.fetch(:shell, 'bash -l -c "{{command}}"')
     end
 
     def run(&block)
@@ -54,7 +56,9 @@ module Hutte
         wrapper = Hutte::Dsl.new(
           @user, @host, ssh,
           dry_run: @dry_run,
-          verbose: @verbose
+          verbose: @verbose,
+          characters_to_escape: @characters_to_escape,
+          shell: @shell
         )
 
         if block.arity == 0

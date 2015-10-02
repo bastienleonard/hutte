@@ -55,6 +55,8 @@ module Hutte
       @local_paths = []
       @verbose = options[:verbose]
       @dry_run = options[:dry_run]
+      @characters_to_escape = options[:characters_to_escape]
+      @shell = options[:shell]
     end
 
     def run(command, *args)
@@ -62,8 +64,10 @@ module Hutte
       output = options.fetch(:output, true) || @verbose
       ok_exit_statuses = options.fetch(:ok_exit_statuses, [0])
       dry_run = options.fetch(:dry_run, @dry_run)
-      characters_to_escape = options.fetch(:characters_to_escape, %w("))
-      shell = options.fetch(:shell, 'bash -l -c "{{command}}"')
+      characters_to_escape = options.fetch(
+        :characters_to_escape, @characters_to_escape
+      )
+      shell = options.fetch(:shell, @shell)
 
       escaped_command = nil
 

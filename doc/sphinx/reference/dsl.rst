@@ -100,12 +100,7 @@ Dsl
         options. May be overriden.
       * ``verbose``: the value you set in :class:`SshSession`'s
         options. May be overriden.
-      * ``characters_to_escape``: an array of characters that should
-        be escaped (by prepending them with ``\``) before running the
-        command. Currently, only double quotes are escaped by default.
-      * ``shell``: this is effectively a way to wrap the command in
-        another string, though the goal is to select the shell and its
-        options. ``false`` can be passed; this will execute the
-        command without any "wrapping". Occurences of ``{{command}}``
-        will be replaced by the command to be executed. ``bash -l -c
-        "{{command}}"`` by default.
+      * ``characters_to_escape``: the value you set in :class:`SshSession`'s
+        options. May be overriden.
+      * ``shell``: the value you set in :class:`SshSession`'s
+        options. May be overriden.
