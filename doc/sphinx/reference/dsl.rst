@@ -72,6 +72,8 @@ Dsl
       * ``delete``: pass the ``--delete`` options to rsync. Of course,
         you should be very careful with this. False by default.
       * ``dry_run``: pass the ``--dry_run`` options to rsync. False by default.
+        Please note that unfortunately, rsync will still perform some checks. For
+        example, it will raise an error if a directory doesn't exist.
       * ``verbose``: pass the ``--verbose`` options to rsync. False by default.
       * ``extra_options``: a string that will be appended to the rsync
         command.

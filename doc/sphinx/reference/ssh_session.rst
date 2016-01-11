@@ -63,9 +63,9 @@ SshSession
         any commands. :meth:`Dsl#rsync` is the exception: the rsync
         program will be called, but with the ``--dry_run`` option
         (which can also be accomplished with :meth:`Dsl#rsync`'s
-        ``dry_run`` option). Commands will always succeed, so it's not
-        always possible to test all possibilities with this
-        option. False by default.
+        ``dry_run`` option). Note that this mode is pretty limited:
+        commands will always succeed and won't produce any
+        output. False by default.
       * ``verbose``: print additional information, may be useful for
         debugging. False by default.
       * ``characters_to_escape``: an array of characters that should
