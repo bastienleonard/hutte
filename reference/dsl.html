@@ -29,7 +29,7 @@
     <link rel="prev" title="SshSession" href="ssh_session.html" />
    
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
   <body role="document">  
@@ -113,7 +113,9 @@ should ignore, using a <code class="docutils literal"><span class="pre">--exclud
 the array. [] by default.</li>
 <li><code class="docutils literal"><span class="pre">delete</span></code>: pass the <code class="docutils literal"><span class="pre">--delete</span></code> options to rsync. Of course,
 you should be very careful with this. False by default.</li>
-<li><code class="docutils literal"><span class="pre">dry_run</span></code>: pass the <code class="docutils literal"><span class="pre">--dry_run</span></code> options to rsync. False by default.</li>
+<li><code class="docutils literal"><span class="pre">dry_run</span></code>: pass the <code class="docutils literal"><span class="pre">--dry_run</span></code> options to rsync. False by default.
+Please note that unfortunately, rsync will still perform some checks. For
+example, it will raise an error if a directory doesn&#8217;t exist.</li>
 <li><code class="docutils literal"><span class="pre">verbose</span></code>: pass the <code class="docutils literal"><span class="pre">--verbose</span></code> options to rsync. False by default.</li>
 <li><code class="docutils literal"><span class="pre">extra_options</span></code>: a string that will be appended to the rsync
 command.</li>
@@ -195,8 +197,8 @@ options. May be overriden.</li>
       &copy;2015, Bastien Léonard.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |
       <a href="../_sources/reference/dsl.txt"
