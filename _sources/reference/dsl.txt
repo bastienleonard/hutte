@@ -30,6 +30,23 @@ Dsl
           end
         end
 
+   .. method:: dsl
+
+      Call the given block with *self* bound to this :class:`Dsl` object.
+
+      Useful when decomposing the program into functions::
+
+        def print_home(s)
+          s.dsl do
+            # Note we don't need to write ``s.run''
+            run 'ls -l /home'
+          end
+        end
+
+        Hutte::SshSession.run('user', 'host') do
+          print_home(self)
+        end
+
    .. method:: lcd(path)
 
       Same as :meth:`cd`, but locally.

@@ -69,6 +69,25 @@ changed as intended.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="Hutte::Dsl#dsl">
+<code class="descname">dsl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#dsl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the given block with <em>self</em> bound to this <a class="reference internal" href="#Hutte::Dsl" title="Hutte::Dsl"><code class="xref rb rb-class docutils literal"><span class="pre">Dsl</span></code></a> object.</p>
+<p>Useful when decomposing the program into functions:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="k">def</span> <span class="nf">print_home</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">dsl</span> <span class="k">do</span>
+    <span class="c1"># Note we don&#39;t need to write ``s.run&#39;&#39;</span>
+    <span class="n">run</span> <span class="s1">&#39;ls -l /home&#39;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span> <span class="k">do</span>
+  <span class="n">print_home</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="Hutte::Dsl#lcd">
 <code class="descname">lcd</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#Hutte::Dsl#lcd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Same as <a class="reference internal" href="#Hutte::Dsl#cd" title="Hutte::Dsl#cd"><code class="xref rb rb-meth docutils literal"><span class="pre">cd</span></code></a>, but locally.</p>
