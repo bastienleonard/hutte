@@ -5,31 +5,6 @@ Here are the caveats that I consider as the most important, roughly in
 order of priority.
 
 
-DSL inconsistency
-^^^^^^^^^^^^^^^^^
-
-The DSL kind of falls apart when you want to break code into
-methods, e.g.::
-
-   Hutte::SshSession.run('user', 'host') do
-     setup(self)
-     sync_code(self)
-     restart(self)
-   end
-
-   def setup(dsl)
-     dsl.run '...'
-   end
-
-   def sync_code(self)
-     dsl.run '...'
-   end
-
-   def restart(self)
-     dsl.run '...'
-   end
-
-
 Passwordless authentication
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

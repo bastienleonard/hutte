@@ -59,6 +59,10 @@ module Hutte
       @shell = options[:shell]
     end
 
+    def dsl(&block)
+      block.call
+    end
+
     def run(command, *args)
       options = args.first || {}
       output = options.fetch(:output, true) || @verbose
