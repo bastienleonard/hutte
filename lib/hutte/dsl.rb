@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2014, 2015 Bastien Léonard. All rights reserved.
+# Copyright 2014, 2015, 2016 Bastien Léonard. All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -97,7 +97,7 @@ module Hutte
       printed_command = @verbose ? full_command : command
 
       if output
-        puts "\n   Executing remote command #{printed_command}"
+        puts "\n   Executing remote command ``#{printed_command}''"
       end
 
       exit_status = nil
@@ -147,7 +147,7 @@ module Hutte
       @remote_paths << path
 
       if @verbose
-        puts "Moved to remote directory #{path}"
+        puts "Moved to remote directory ``#{path}''"
       end
 
       begin
@@ -200,7 +200,7 @@ module Hutte
       printed_command = @verbose ? full_command : command
 
       if output
-        puts "   Executing local command #{printed_command}"
+        puts "   Executing local command ``#{printed_command}''"
       end
 
       exit_status = nil
