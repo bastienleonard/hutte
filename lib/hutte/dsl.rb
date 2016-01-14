@@ -147,7 +147,7 @@ module Hutte
       @remote_paths << path
 
       if @verbose
-        puts "Move to remote directory #{path}"
+        puts "Moved to remote directory #{path}"
       end
 
       begin
