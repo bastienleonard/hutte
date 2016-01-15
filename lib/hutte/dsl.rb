@@ -59,8 +59,8 @@ module Hutte
       @shell = options[:shell]
     end
 
-    def dsl(&block)
-      block.call
+    def dsl
+      yield
     end
 
     def run(command, *args)
