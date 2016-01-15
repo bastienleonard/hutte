@@ -174,7 +174,7 @@ module Hutte
       @local_paths << path
 
       if @verbose
-        puts "Move to local directory #{path}"
+        puts "Moved to local directory #{path}"
       end
 
       begin
