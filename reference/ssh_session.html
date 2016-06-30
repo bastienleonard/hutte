@@ -50,7 +50,7 @@
 <dd><p><em>args</em> can contain at most two values. A string value is
 interpreted as a password; a hash value is interpreted as an
 options hash.</p>
-<div class="highlight-ruby"><div class="highlight"><pre><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span>
 <span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">)</span>
 <span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="ss">verbose</span><span class="p">:</span> <span class="kp">true</span> <span class="p">})</span>
 <span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span> <span class="p">{</span>
@@ -64,7 +64,7 @@ user should press Enter without typing a password.</p>
 <p>Must be called with a block. It will be passed a <a class="reference internal" href="dsl.html#Hutte::Dsl" title="Hutte::Dsl"><code class="xref rb rb-class docutils literal"><span class="pre">Dsl</span></code></a>
 instance with methods such as <a class="reference internal" href="dsl.html#Hutte::Dsl#run" title="Hutte::Dsl#run"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#run</span></code></a> and
 <a class="reference internal" href="dsl.html#Hutte::Dsl#cd" title="Hutte::Dsl#cd"><code class="xref rb rb-meth docutils literal"><span class="pre">Dsl#cd</span></code></a>.</p>
-<div class="highlight-ruby"><div class="highlight"><pre><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
   <span class="n">s</span><span class="o">.</span><span class="n">cd</span> <span class="s1">&#39;/home&#39;</span> <span class="k">do</span>
     <span class="n">s</span><span class="o">.</span><span class="n">run</span> <span class="s1">&#39;pwd&#39;</span>
     <span class="n">s</span><span class="o">.</span><span class="n">run</span> <span class="s1">&#39;ls -l&#39;</span>
@@ -75,7 +75,7 @@ instance with methods such as <a class="reference internal" href="dsl.html#Hutte
 <p>If the block accepts no parameters, its <em>self</em> value will be
 bound to the DSL object instead, which allows for a less verbose
 style. This is the recommended way, at least for large scripts.</p>
-<div class="highlight-ruby"><div class="highlight"><pre><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span> <span class="k">do</span>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span> <span class="k">do</span>
   <span class="n">cd</span> <span class="s1">&#39;/home&#39;</span> <span class="k">do</span>
     <span class="n">run</span> <span class="s1">&#39;pwd&#39;</span>
     <span class="n">run</span> <span class="s1">&#39;ls -l&#39;</span>
@@ -142,14 +142,11 @@ will be replaced by the command to be executed. <code class="docutils literal"><
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -160,7 +157,7 @@ will be replaced by the command to be executed. <code class="docutils literal"><
       &copy;2015, Bastien Léonard.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |

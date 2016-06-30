@@ -51,7 +51,7 @@ Ruby. However I maintain a stable branch in an attempt to prevent new
 features from introducing bugs in your projects.</p>
 <p>Hutte aims to be a sort of port of <a class="reference external" href="http://www.fabfile.org">Fabric</a>. As such, its API is very close.  Here is a
 quick example:</p>
-<div class="highlight-ruby"><div class="highlight"><pre><span class="nb">require</span> <span class="s1">&#39;hutte&#39;</span>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="nb">require</span> <span class="s1">&#39;hutte&#39;</span>
 
 <span class="no">Hutte</span><span class="o">::</span><span class="no">SshSession</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">)</span> <span class="k">do</span>
   <span class="c1"># Execute some local commands, from /tmp</span>
@@ -102,14 +102,11 @@ quick example:</p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -120,7 +117,7 @@ quick example:</p>
       &copy;2015, Bastien Léonard.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |
