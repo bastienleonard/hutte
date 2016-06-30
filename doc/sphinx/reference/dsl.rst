@@ -25,7 +25,7 @@ Dsl
         cd '/home' do
           run 'pwd' # Prints /home
           cd 'bastien' do
-            run 'pwd' # Prints /home/bastienn
+            run 'pwd' # Prints /home/bastien
             run 'ls'  # Prints the content of /home/bastien
           end
         end
