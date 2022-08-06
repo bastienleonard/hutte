@@ -51,15 +51,10 @@ module Hutte
       Net::SSH.start(
         @host,
         @user,
+        # TODO: use IO#getpass()
         password: @password || prompt("Password for #{@user}@#{@host}")
       ) do |ssh|
-        wrapper = Hutte::Dsl.new(
-          @user, @host, ssh,
-          dry_run: @dry_run,
-          verbose: @verbose,
-          characters_to_escape: @characters_to_escape,
-          shell: @shell
-        )
+        wrapper = dsl(ssh)
 
         if block.arity == 0
           wrapper.instance_eval(&block)
@@ -71,6 +66,16 @@ module Hutte
       nil
     end
 
+    def dsl(ssh = nil)
+      Hutte::Dsl.new(
+        @user, @host, ssh || @session,
+        dry_run: @dry_run,
+        verbose: @verbose,
+        characters_to_escape: @characters_to_escape,
+        shell: @shell
+      )
+    end
+
     private
 
     def prompt(message, *args)
@@ -79,6 +84,29 @@ module Hutte
       ask("#{message}: ") do |q|
         q.echo = echo
       end
+    end
+
+    # TODO: remove
+    def start
+      @session = Net::SSH.start(
+        @host,
+        @user,
+        password: @password || prompt("Password for #{@user}@#{@host}")
+      )
+      finalizer = proc do
+        STDERR.puts(
+          "Warning: SshSession object hasn't been properly cleaned up by calling stop()"
+        ) unless @session.closed?
+      end
+
+      ObjectSpace.define_finalizer(
+        @session,
+        finalizer
+      )
+    end
+
+    def stop
+      @session.close
     end
   end
 end

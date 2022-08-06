@@ -1,6 +1,8 @@
+#! /usr/bin/env ruby
 # -*- coding: utf-8 -*-
+# -*- mode: ruby -*-
 
-# Copyright 2015 Bastien Léonard. All rights reserved.
+# Copyright 2019 Bastien Léonard. All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are
@@ -26,23 +28,32 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-module Hutte
-  # This class is currently only used internally
-  class OptionsDsl
-    def initialize(options)
-      @callbacks = options[:callbacks]
-      @callbacks.each do |name|
-        instance_eval <<-END, __FILE__, __LINE__ + 1
-          def #{name}(&block)
-            if block.nil?
-              @#{name}
-            else
-              @#{name} = block
-              self
-            end
-          end
-        END
-      end
-    end
+require 'hutte'
+require 'hutte/runner'
+
+STANDARD_FILENAME = 'huttefile'
+GLOBAL_CONFIG = Hutte::Runner::GlobalConfig.new
+
+begin
+  require "./#{STANDARD_FILENAME}"
+rescue LoadError
+  STDERR.puts "Could not load file #{STANDARD_FILENAME}"
+  exit(1)
+end
+
+not_found = $*.reject { |target| Hutte::Runner::Task.include?(target.to_sym) }
+
+unless not_found.empty?
+  STDERR.puts "Task(s) not found: #{not_found.join(', ')}"
+  exit(1)
+end
+
+Hutte::SshSession.run(
+  GLOBAL_CONFIG.user,
+  GLOBAL_CONFIG.host,
+  GLOBAL_CONFIG.password
+) do |dsl|
+  $*.each do |target|
+    Hutte::Runner::Task.run_task(target.to_sym, dsl)
   end
 end

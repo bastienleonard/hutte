@@ -12,10 +12,10 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Simple SSH execution in Ruby, heavily based on Python's Fabric.}
 #  spec.description   = %q{TODO: Write a longer description. Optional.}
   spec.homepage      = 'https://github.com/bastienleonard/hutte'
-  spec.license       = 'BSD'
+  spec.license       = 'BSD-2-Clause'
 
   spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) } + ['hutte']
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
